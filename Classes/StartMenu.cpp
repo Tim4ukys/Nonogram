@@ -1,15 +1,15 @@
-#include "MainScene.h"
+#include "StartMenu.h"
 #include "FontManager.h"
 
 USING_NS_CC;
 
-Scene* MainScene::createScene()
+Scene* StartMenu::createScene()
 {
-    return MainScene::create();
+    return StartMenu::create();
 }
 
 // init callback
-bool MainScene::init()
+bool StartMenu::init()
 {
     if (!Scene::init()) return false;
 
