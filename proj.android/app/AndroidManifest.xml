@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.tim4ukys.testgame"
+    package="ru.tim4ukys.nonogram"
     android:installLocation="auto">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <!-- <uses-permission android:name="android.permission.INTERNET"/> -->
     
     <uses-feature android:glEsVersion="0x00020000" />
     
@@ -23,7 +23,8 @@
             android:label="@string/app_name"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
             android:launchMode="singleTask"
-            android:taskAffinity=""  >
+            android:taskAffinity=""
+            android:resizeableActivity="false"  >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
