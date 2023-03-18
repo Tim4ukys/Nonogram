@@ -14,6 +14,7 @@ static cocos2d::Size designResolutionSize = cocos2d::Size(320, 480);
 static cocos2d::Size smallResolutionSize = cocos2d::Size(320, 480);
 static cocos2d::Size mediumResolutionSize = cocos2d::Size(768, 1024);
 static cocos2d::Size largeResolutionSize = cocos2d::Size(1536, 2048);
+static cocos2d::Size desktopResolutionSize = cocos2d::Size(424, 636);
 
 AppDelegate::AppDelegate()
 {
@@ -49,7 +50,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
     auto glview = director->getOpenGLView();
     if(!glview) {
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_MAC) || (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
-        glview = GLViewImpl::createWithRect("Nonogram", cocos2d::Rect(0, 0, designResolutionSize.width, designResolutionSize.height));
+        glview = GLViewImpl::createWithRect("Nonogram", cocos2d::Rect(0, 0, desktopResolutionSize.width, desktopResolutionSize.height));
 #else
         glview = GLViewImpl::create("Nonogram");
 #endif
