@@ -1,6 +1,8 @@
 #include "StartMenu.h"
 #include "FontManager.h"
 
+#include "SelectLevel.h"
+
 USING_NS_CC;
 
 Scene* StartMenu::createScene()
@@ -14,8 +16,12 @@ bool StartMenu::init()
     if (!Scene::init()) return false;
 
     const auto visibleSize = Director::getInstance()->getVisibleSize();
+    const Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-    auto mnLevel = MenuItemLabel::create(Label::createWithTTF(FontManager::mainMenu, "Уровни"));
+    auto mnLevel = MenuItemLabel::create(Label::createWithTTF(FontManager::mainMenu, "Уровни"),
+        [](Ref* sender) {
+            Director::getInstance()->pushScene(SelectLevel::create());
+        });
     auto mnExit = MenuItemLabel::create(Label::createWithTTF(FontManager::mainMenu, "Закрыть"), 
         [&](Ref* sender){
             Director::getInstance()->end();
@@ -27,7 +33,7 @@ bool StartMenu::init()
         });
 
     auto menu = Menu::create(mnLevel, mnExit, NULL);
-    menu->setPosition(visibleSize.width / 2, visibleSize.height / 2);
+    menu->setPosition(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2);
     menu->alignItemsVerticallyWithPadding(15);
     this->addChild(menu, 1);
 

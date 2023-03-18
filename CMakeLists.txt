@@ -29,6 +29,13 @@ set(APP_NAME Nonogram)
 
 project(${APP_NAME})
 
+# third-party
+macro(incThirdParty dirName)
+    include_directories(${CMAKE_CURRENT_SOURCE_DIR}/third-party/${dirName}/)
+endmacro()
+
+incThirdParty(modern-json)
+
 if(XCODE)
     if(NOT DEFINED CMAKE_XCODE_ATTRIBUTE_IPHONEOS_DEPLOYMENT_TARGET)
         SET (CMAKE_XCODE_ATTRIBUTE_IPHONEOS_DEPLOYMENT_TARGET 8.0)
@@ -60,12 +67,14 @@ list(APPEND GAME_SOURCE
      Classes/FontManager.cpp
 
      Classes/Menu/StartMenu.cpp
+     Classes/Menu/SelectLevel.cpp
      )
 list(APPEND GAME_HEADER
      Classes/AppDelegate.h
      Classes/FontManager.h
 
      Classes/Menu/StartMenu.h
+     Classes/Menu/SelectLevel.h
      )
 
 if(ANDROID)
