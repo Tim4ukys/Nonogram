@@ -5,11 +5,6 @@
 
 USING_NS_CC;
 
-cocos2d::Scene *SelectLevel::createScene()
-{
-    return SelectLevel::create();
-}
-
 bool SelectLevel::init()
 {
     if (!Scene::init()) return false;
@@ -32,8 +27,8 @@ bool SelectLevel::init()
 
     auto back = MenuItemLabel::create(Label::createWithTTF(FontManager::mainMenu, "Назад"), [](Ref* sender){ Director::getInstance()->popScene(); });
 
-    float x = origin.x + visibleSize.width - back->getContentSize().width/2 - 20;
-    float y = origin.y + back->getContentSize().height/2 + 20;
+    const float x = origin.x + visibleSize.width - back->getContentSize().width/2 - 20;
+    const float y = origin.y + back->getContentSize().height/2 + 20;
     back->setPosition(Vec2(x, y));
 
     auto menu = Menu::create(back, NULL);
