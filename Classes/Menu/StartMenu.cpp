@@ -1,5 +1,6 @@
 #include "StartMenu.h"
 #include "FontManager.h"
+#include "DefColors.hpp"
 
 #include "SelectLevel.h"
 
@@ -14,6 +15,9 @@ Scene* StartMenu::createScene()
 bool StartMenu::init()
 {
     if (!Scene::init()) return false;
+
+    // set bg color
+    this->addChild(LayerColor::create(Color4B(DefColors::MenuBackground)), -1);
 
     const auto visibleSize = Director::getInstance()->getVisibleSize();
     const Vec2 origin = Director::getInstance()->getVisibleOrigin();

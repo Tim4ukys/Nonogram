@@ -1,5 +1,6 @@
 #include "SelectLevel.h"
 #include "FontManager.h"
+#include "DefColors.hpp"
 #include "json.hpp"
 
 USING_NS_CC;
@@ -12,6 +13,9 @@ cocos2d::Scene *SelectLevel::createScene()
 bool SelectLevel::init()
 {
     if (!Scene::init()) return false;
+
+    // set bg color
+    this->addChild(LayerColor::create(DefColors::MenuBackground), -1);
 
     /*
     auto fd = FileUtils::getInstance()->getDataFromFile("levels/levels.json");

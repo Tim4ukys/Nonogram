@@ -73,6 +73,8 @@ list(APPEND GAME_HEADER
      Classes/AppDelegate.h
      Classes/FontManager.h
 
+     Classes/DefColors.hpp
+
      Classes/Menu/StartMenu.h
      Classes/Menu/SelectLevel.h
      )
