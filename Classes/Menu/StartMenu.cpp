@@ -16,11 +16,28 @@ bool StartMenu::init()
 {
     if (!Scene::init()) return false;
 
-    // set bg color
+    // set bg color(-1)
     this->addChild(LayerColor::create(Color4B(DefColors::MenuBackground)), -1);
 
     const auto visibleSize = Director::getInstance()->getVisibleSize();
     const Vec2 origin = Director::getInstance()->getVisibleOrigin();
+
+    // ---------------
+    // Logo(2, 3)
+
+    auto logo = Sprite::create("img/cat.png");
+    logo->setPosition(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2 + 158);
+    const auto frameSize = Director::getInstance()->getOpenGLView()->getFrameSize();
+    logo->setScale(MIN(frameSize.width / 320, frameSize.height / 480));
+    this->addChild(logo, 2);
+    
+    auto txtLogo = Label::createWithTTF(FontManager::logoInMainMenu, "Nonogram");
+    txtLogo->setPosition(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2 + (158 - 34));
+    txtLogo->setColor(DefColors::MainMenuTextLogo);
+    this->addChild(txtLogo, 3);
+
+    // ----------------
+    // Menu list(1)
 
     auto mnLevel = MenuItemLabel::create(Label::createWithTTF(FontManager::mainMenu, "Уровни"),
         [](Ref* sender) {
