@@ -5,7 +5,10 @@
 
 class FontManager {
 public:
+    static void init();
+
     static cocos2d::TTFConfig mainMenu;
+    static cocos2d::TTFConfig logoInMainMenu;
 };
 
 #endif // __FONT_MANAGER_H__

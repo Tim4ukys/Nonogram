@@ -1,5 +1,6 @@
 #include "AppDelegate.h"
 #include "Menu/StartMenu.h"
+#include "FontManager.h"
 
 // #define USE_AUDIO_ENGINE 1
 
@@ -41,6 +42,8 @@ void AppDelegate::initGLContextAttrs()
 // don't modify or remove this function
 static int register_all_packages()
 {
+    FontManager::init();
+    
     return 0; //flag for packages manager
 }
 
