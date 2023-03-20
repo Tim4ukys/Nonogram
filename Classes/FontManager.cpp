@@ -9,9 +9,10 @@ void FontManager::init()
 {
     const auto visibleSize = Director::getInstance()->getVisibleSize();
 
-    auto calcW = [](float fontSize) -> float { return fontSize / 320.f; };
-    auto calcH = [](float fontSize) -> float { return fontSize / 480.f; };
+    auto calc = [&visibleSize](float fontSize) -> float { 
+        return MIN(visibleSize.width * (fontSize / 320.0f), visibleSize.height * (fontSize / 480.0f)); 
+    };
 
-    mainMenu = cocos2d::TTFConfig("fonts/vga8x16.ttf", MIN(visibleSize.width * calcW(21.f), visibleSize.height * calcH(21.f)));
-    logoInMainMenu = cocos2d::TTFConfig("fonts/vga8x16.ttf", MIN(visibleSize.width * calcW(33.f), visibleSize.height * calcH(33.f)));
+    mainMenu = cocos2d::TTFConfig("fonts/vga8x16.ttf", calc(21.0f));
+    logoInMainMenu = cocos2d::TTFConfig("fonts/vga8x16.ttf", calc(33.0f));
 }
