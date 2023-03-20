@@ -66,6 +66,7 @@ list(APPEND GAME_SOURCE
      Classes/AppDelegate.cpp
      Classes/FontManager.cpp
 
+     Classes/Menu/AbstractMenu.cpp
      Classes/Menu/StartMenu.cpp
      Classes/Menu/SelectLevel.cpp
      )
@@ -74,7 +75,8 @@ list(APPEND GAME_HEADER
      Classes/FontManager.h
 
      Classes/DefColors.hpp
-
+     
+     Classes/Menu/AbstractMenu.hpp
      Classes/Menu/StartMenu.h
      Classes/Menu/SelectLevel.h
      )

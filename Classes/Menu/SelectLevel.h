@@ -1,14 +1,16 @@
 #ifndef __SELECT_LEVEL_H__
 #define __SELECT_LEVEL_H__
 
-#include "cocos2d.h"
+#include "AbstractMenu.hpp"
 
-class SelectLevel : public cocos2d::Scene {
+class SelectLevel : public AbstractMenu {
 public:
-    static inline cocos2d::Scene* createScene() { return SelectLevel::create(); }
+    static inline cocos2d::Scene* createScene() {
+        return SelectLevel::create();
+    }
 
-    virtual bool init() final;
-    
+    virtual void onAddChildToScrollView(cocos2d::Layer const* pScrollView, const float scrlWidth, float &contentSize) final;
+
     CREATE_FUNC(SelectLevel);
 };
 
