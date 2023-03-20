@@ -29,10 +29,7 @@ bool StartMenu::init()
     // Logo(2, 3)
 
     nlohmann::json j;
-    {
-        auto fileData = FileUtils::getInstance()->getDataFromFile("img/logo/logos.json");
-        j = nlohmann::json::parse(std::string((char*)fileData.getBytes(), (size_t)fileData.getSize()));
-    }
+    snippets::loadJSON("img/logo/logos.json", j);
 
     auto logo = Sprite::create("img/logo/" + j[snippets::randomInteger(0, j.size()-1)].get<std::string>());
     logo->setPosition(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2 + 158);
