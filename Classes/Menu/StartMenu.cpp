@@ -4,6 +4,9 @@
 
 #include "SelectLevel.h"
 
+#include "json.hpp"
+#include "Snippets.hpp"
+
 USING_NS_CC;
 
 Scene* StartMenu::createScene()
@@ -25,7 +28,13 @@ bool StartMenu::init()
     // ---------------
     // Logo(2, 3)
 
-    auto logo = Sprite::create("img/cat.png");
+    nlohmann::json j;
+    {
+        auto fileData = FileUtils::getInstance()->getDataFromFile("img/logo/logos.json");
+        j = nlohmann::json::parse(std::string((char*)fileData.getBytes(), (size_t)fileData.getSize()));
+    }
+
+    auto logo = Sprite::create("img/logo/" + j[snippets::randomInteger(0, j.size()-1)].get<std::string>());
     logo->setPosition(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2 + 158);
     const auto frameSize = Director::getInstance()->getOpenGLView()->getFrameSize();
     logo->setScale(MIN(frameSize.width / 320, frameSize.height / 480));
