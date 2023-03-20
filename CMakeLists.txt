@@ -72,8 +72,9 @@ list(APPEND GAME_SOURCE
      )
 list(APPEND GAME_HEADER
      Classes/AppDelegate.h
-     Classes/FontManager.h
+     Classes/Snippets.hpp
 
+     Classes/FontManager.h
      Classes/DefColors.hpp
      
      Classes/Menu/AbstractMenu.hpp
