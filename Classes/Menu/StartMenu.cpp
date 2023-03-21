@@ -62,6 +62,7 @@ bool StartMenu::init()
     auto menu = Menu::create(mnLevel, mnExit, NULL);
     menu->setPosition(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2);
     menu->alignItemsVerticallyWithPadding(15);
+    menu->setColor(DefColors::menuItemLabel);
     this->addChild(menu, 1);
 
     return true;

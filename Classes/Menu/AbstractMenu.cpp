@@ -45,6 +45,7 @@ bool AbstractMenu::init()
 
     auto back = MenuItemLabel::create(Label::createWithTTF(FontManager::mainMenu, "Назад"), [](Ref* sender){ Director::getInstance()->popScene(); });
     back->setPosition(origin.x + visibleSize.width - back->getContentSize().width/2 - 20, origin.y + back->getContentSize().height/2 + 20);
+    back->setColor(DefColors::menuItemLabel);
 
     auto menu = Menu::create(back, NULL);
     menu->setPosition(Vec2::ZERO);
