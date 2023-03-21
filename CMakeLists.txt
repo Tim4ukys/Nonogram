@@ -147,6 +147,11 @@ else()
     target_link_libraries(${APP_NAME} -Wl,--whole-archive cpp_android_spec -Wl,--no-whole-archive)
 endif()
 
+set_target_properties(${APP_NAME} PROPERTIES
+        CXX_STANDARD 17
+        CXX_EXTENSIONS OFF
+        )
+
 target_link_libraries(${APP_NAME} cocos2d)
 target_include_directories(${APP_NAME}
         PRIVATE Classes
