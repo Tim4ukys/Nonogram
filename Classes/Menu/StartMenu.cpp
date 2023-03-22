@@ -31,10 +31,8 @@ bool StartMenu::init()
     nlohmann::json j;
     snippets::loadJSON("img/logo/logos.json", j);
 
-    auto logo = Sprite::create("img/logo/" + j[snippets::randomInteger(0, j.size()-1)].get<std::string>());
+    auto logo = snippets::loadSpriteWithFixResolution("img/logo/" + j[snippets::randomInteger(0, j.size()-1)].get<std::string>());
     logo->setPosition(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2 + 158);
-    const auto frameSize = Director::getInstance()->getOpenGLView()->getFrameSize();
-    logo->setScale(MIN(frameSize.width / 320, frameSize.height / 480));
     this->addChild(logo, 2);
     
     auto txtLogo = Label::createWithTTF(FontManager::logoInMainMenu, "Nonogram");

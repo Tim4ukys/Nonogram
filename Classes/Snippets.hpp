@@ -8,6 +8,13 @@
 
 namespace snippets {
 
+    inline cocos2d::Sprite* loadSpriteWithFixResolution(const std::string& path) {
+        auto* r = cocos2d::Sprite::create(path);
+        const auto fmSize = cocos2d::Director::getInstance()->getOpenGLView()->getFrameSize();
+        r->setScale(MIN(fmSize.width / 320, fmSize.height / 480));
+        return r;
+    }
+
     inline void loadJSON(const std::string& path, nlohmann::json& j) {
         auto fileData = cocos2d::FileUtils::getInstance()->getDataFromFile(path);
         j = nlohmann::json::parse(std::string((char*)fileData.getBytes(), (size_t)fileData.getSize()));
