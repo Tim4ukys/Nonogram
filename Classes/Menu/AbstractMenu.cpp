@@ -26,7 +26,12 @@ bool AbstractMenu::init()
     // scrl->setScrollBarAutoHideEnabled(true);
     scrl->setScrollBarEnabled(false);
 
-    const float scrlWidth = visibleSize.width - 20*2;
+#ifdef CC_PLATFORM_PC
+    constexpr float marginSide = 20.f;
+#else
+    constexpr float marginSide = 10.f;
+#endif
+    const float scrlWidth = visibleSize.width - marginSide*2;
     const float maxH = visibleSize.height - 50 /*низ*/ - 15 /*верх*/;
 
     // Добавляем сам контент
@@ -36,7 +41,7 @@ bool AbstractMenu::init()
     scrl->setContentSize({scrlWidth, MIN(maxH, contentSize)});
     scrl->setInnerContainerSize({scrlWidth, contentSize});
     scrl->setAnchorPoint({0.0f, 1.0f});
-    scrl->setPosition({origin.x + 20, origin.y + visibleSize.height - 15});
+    scrl->setPosition({origin.x + marginSide, origin.y + visibleSize.height - 15});
     scrl->setBounceEnabled(contentSize > maxH);
     this->addChild(scrl);
 
