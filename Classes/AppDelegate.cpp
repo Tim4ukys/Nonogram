@@ -2,6 +2,10 @@
 #include "Menu/StartMenu.h"
 #include "FontManager.h"
 
+#if CC_PLATFORM_LINUX == CC_TARGET_PLATFORM
+#include <SOIL/SOIL.h>
+#endif
+
 // #define USE_AUDIO_ENGINE 1
 
 #if USE_AUDIO_ENGINE
@@ -59,6 +63,15 @@ bool AppDelegate::applicationDidFinishLaunching() {
 #endif
         director->setOpenGLView(glview);
     }
+
+    // fix app icon in linux devices
+#if CC_PLATFORM_LINUX == CC_TARGET_PLATFORM
+    GLFWimage icon;
+    icon.pixels = SOIL_load_image(FileUtils::getInstance()->fullPathForFilename("img/app_icon.png").c_str(),
+                                  &icon.width, &icon.height, 0, SOIL_LOAD_RGBA);
+    glfwSetWindowIcon(dynamic_cast<GLViewImpl*>(glview)->getWindow(), 1, &icon);
+    SOIL_free_image_data(icon.pixels);
+#endif
 
     director->setDisplayStats(false);
     director->setAnimationInterval(1.0f / 60);
