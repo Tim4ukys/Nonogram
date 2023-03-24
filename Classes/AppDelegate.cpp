@@ -1,6 +1,7 @@
 #include "AppDelegate.h"
 #include "Menu/StartMenu.h"
 #include "FontManager.h"
+#include "Config.hpp"
 
 #if CC_PLATFORM_LINUX == CC_TARGET_PLATFORM
 #include <SOIL/SOIL.h>
@@ -47,6 +48,7 @@ void AppDelegate::initGLContextAttrs()
 static int register_all_packages()
 {
     FontManager::init();
+    Config::init("conf/conf.json");
     
     return 0; //flag for packages manager
 }
