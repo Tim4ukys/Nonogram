@@ -5,6 +5,7 @@
 #ifndef NONOGRAM_CONFIG_HPP
 #define NONOGRAM_CONFIG_HPP
 
+#include <memory>
 #include <string_view>
 #include "json.hpp"
 
@@ -12,13 +13,13 @@ class Config {
     nlohmann::json m_j;
     std::string_view m_fileName;
 
-    static inline Config* s_pConfig;
+    static inline std::unique_ptr<Config> s_pConfig;
 
 public:
     explicit Config(const std::string_view &fileName);
     ~Config();
 
-    static inline void init(const std::string_view &fileName){ s_pConfig = new Config(fileName); };
+    static inline void init(const std::string_view &fileName){ s_pConfig = std::make_unique<Config>(fileName); };
     static inline auto& getInstance() { return *s_pConfig; };
 
     template<typename T>
