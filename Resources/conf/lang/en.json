@@ -1,0 +1,18 @@
+{
+  "startMenu": {
+    "levels": "Levels",
+    "lang": "Language",
+    "exit": "Exit"
+  },
+  "absMenu": {
+    "back": "Back"
+  },
+  "selectLevel": {
+    "ll": "Local legend",
+    "alpha": "Alpha",
+    "veteran": "Veteran",
+    "novice": "Novice",
+    "kettle": "Kettle",
+    "guard": "Guard"
+  }
+}

@@ -6,6 +6,7 @@
 
 #include "json.hpp"
 #include "Snippets.hpp"
+#include "Language.hpp"
 
 USING_NS_CC;
 
@@ -42,12 +43,13 @@ bool StartMenu::init()
 
     // ----------------
     // Menu list(1)
+    auto& lang = Language::getInstance()["startMenu"];
 
-    auto mnLevel = MenuItemLabel::create(Label::createWithTTF(FontManager::mainMenu, "Уровни"),
+    auto mnLevel = MenuItemLabel::create(Label::createWithTTF(FontManager::mainMenu, lang["levels"]),
         [](Ref* sender) {
             Director::getInstance()->pushScene(SelectLevel::create());
         });
-    auto mnExit = MenuItemLabel::create(Label::createWithTTF(FontManager::mainMenu, "Закрыть"), 
+    auto mnExit = MenuItemLabel::create(Label::createWithTTF(FontManager::mainMenu, lang["exit"]),
         [&](Ref* sender){
             Director::getInstance()->end();
 

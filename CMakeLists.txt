@@ -66,6 +66,7 @@ list(APPEND GAME_SOURCE
      Classes/AppDelegate.cpp
      Classes/FontManager.cpp
         Classes/Config.cpp
+        Classes/Language.cpp
 
      Classes/Menu/AbstractMenu.cpp
      Classes/Menu/StartMenu.cpp
@@ -75,6 +76,7 @@ list(APPEND GAME_HEADER
      Classes/AppDelegate.h
      Classes/Snippets.hpp
         Classes/Config.hpp
+        Classes/Language.hpp
 
      Classes/FontManager.h
      Classes/DefColors.hpp

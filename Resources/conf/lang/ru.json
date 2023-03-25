@@ -1,0 +1,18 @@
+{
+  "startMenu": {
+    "levels": "Уровни",
+    "lang": "Язык",
+    "exit": "Выйти"
+  },
+  "absMenu": {
+    "back": "Назад"
+  },
+  "selectLevel": {
+    "ll": "Местная легенда",
+    "alpha": "Альфа",
+    "veteran": "Бывалый",
+    "novice": "Начинающий",
+    "kettle": "Чайник",
+    "guard": "Шнырь"
+  }
+}

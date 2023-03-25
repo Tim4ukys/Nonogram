@@ -1,6 +1,7 @@
 #include "AbstractMenu.hpp"
 #include "DefColors.hpp"
 #include "FontManager.h"
+#include "Language.hpp"
 
 #include "ui/CocosGUI.h"
 
@@ -48,7 +49,10 @@ bool AbstractMenu::init()
     // ------------
     // button "go to back"
 
-    auto back = MenuItemLabel::create(Label::createWithTTF(FontManager::mainMenu, "Назад"), [](Ref* sender){ Director::getInstance()->popScene(); });
+    auto back = MenuItemLabel::create(
+            Label::createWithTTF(FontManager::mainMenu, Language::getInstance()["absMenu"]["back"]),
+            [](Ref* sender){ Director::getInstance()->popScene(); }
+            );
     back->setPosition(origin.x + visibleSize.width - back->getContentSize().width/2 - 20, origin.y + back->getContentSize().height/2 + 20);
     back->setColor(DefColors::menuItemLabel);
 
