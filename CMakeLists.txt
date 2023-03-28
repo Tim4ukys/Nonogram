@@ -36,6 +36,18 @@ endmacro()
 
 incThirdParty(modern-json)
 
+# boost lib
+set(boost_for_android /home/tim4ukys/git/Boost-for-Android) # Путь до boost_for_android
+
+if (ANDROID)
+    set(Boost_INCLUDE_DIRS ${boost_for_android}/build/out/${ANDROID_ABI}/include/boost-1_80/)
+    link_directories(${boost_for_android}/build/out/${ANDROID_ABI}/lib/)
+    set(Boost_SIGNALS2_LIBRARY "")
+else()
+    find_package( Boost 1.80.0 COMPONENTS Signals2 )
+endif()
+include_directories( ${Boost_INCLUDE_DIRS} )
+
 if(XCODE)
     if(NOT DEFINED CMAKE_XCODE_ATTRIBUTE_IPHONEOS_DEPLOYMENT_TARGET)
         SET (CMAKE_XCODE_ATTRIBUTE_IPHONEOS_DEPLOYMENT_TARGET 8.0)
@@ -155,6 +167,8 @@ set_target_properties(${APP_NAME} PROPERTIES
         CXX_STANDARD 17
         CXX_EXTENSIONS OFF
         )
+
+target_link_libraries(${APP_NAME} ${Boost_SIGNALS2_LIBRARY})
 
 target_link_libraries(${APP_NAME} cocos2d)
 target_include_directories(${APP_NAME}
