@@ -8,11 +8,21 @@
 USING_NS_CC;
 
 Config::Config(const std::string_view &fileName) : m_fileName(fileName) {
-    auto data = FileUtils::getInstance()->getDataFromFile(fileName.data());
-    m_j = nlohmann::json::parse(std::string((char*)data.getBytes(), (size_t)data.getSize()));
+    try {
+        auto f = FileUtils::getInstance();
+        m_j = nlohmann::json::parse(f->getStringFromFile(f->getWritablePath() + fileName.data()));
+    } catch (nlohmann::json::parse_error err) {
+        m_j = R"({ "language": "ru" })"_json;
+    }
 }
 
 Config::~Config() {
-    FileUtils::getInstance()->writeStringToFile(m_j.dump(), m_fileName.data());
+    save();
+}
+
+bool Config::save() {
+    auto f = FileUtils::getInstance();
+//    std::cout << "FileUtils::getWritablePath(): " << f->getWritablePath() << std::endl;
+    return f->writeStringToFile(m_j.dump(), f->getWritablePath() + m_fileName.data());
 }
 

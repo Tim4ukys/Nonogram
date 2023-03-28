@@ -29,6 +29,7 @@ AppDelegate::AppDelegate()
 
 AppDelegate::~AppDelegate() 
 {
+    Config::release();
 #if USE_AUDIO_ENGINE
     AudioEngine::end();
 #endif
@@ -49,7 +50,7 @@ void AppDelegate::initGLContextAttrs()
 static int register_all_packages()
 {
     FontManager::init();
-    Config::init("conf/conf.json");
+    Config::init("conf.json");
     Language::init(Config::getInstance());
     
     return 0; //flag for packages manager
