@@ -12,6 +12,8 @@
 #include "Config.hpp"
 
 class Language {
+    friend class SelectLanguage;
+
     static inline std::unique_ptr<Language> s_pLang;
     using menuItem = std::map<std::string, std::string>; // переводы слов в меню по ключу
     using dataItem = std::map<std::string, menuItem>; // структура со всеми "менюшками"

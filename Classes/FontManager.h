@@ -10,6 +10,7 @@ public:
     static cocos2d::TTFConfig mainMenu;
     static cocos2d::TTFConfig logoInMainMenu;
     static cocos2d::TTFConfig selectLevelTitle;
+    static cocos2d::TTFConfig selectLanguage;
 };
 
 #endif // __FONT_MANAGER_H__

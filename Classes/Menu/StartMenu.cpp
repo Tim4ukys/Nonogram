@@ -3,6 +3,7 @@
 #include "DefColors.hpp"
 
 #include "SelectLevel.h"
+#include "SelectLanguage.hpp"
 
 #include "json.hpp"
 #include "Snippets.hpp"
@@ -49,6 +50,8 @@ bool StartMenu::init()
         [](Ref* sender) {
             Director::getInstance()->replaceScene(SelectLevel::create());
         });
+    auto mnSelectLang = MenuItemLabel::create(Label::createWithTTF(FontManager::mainMenu, lang["lang"]),
+                                              [](Ref* sender) { Director::getInstance()->replaceScene(SelectLanguage::create()); });
     auto mnExit = MenuItemLabel::create(Label::createWithTTF(FontManager::mainMenu, lang["exit"]),
         [](Ref* sender){
             Director::getInstance()->end();
@@ -59,7 +62,7 @@ bool StartMenu::init()
             #endif
         });
 
-    auto menu = Menu::create(mnLevel, mnExit, NULL);
+    auto menu = Menu::create(mnLevel, mnSelectLang, mnExit, NULL);
     menu->setPosition(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2);
     menu->alignItemsVerticallyWithPadding(15);
     menu->setColor(DefColors::menuItemLabel);
