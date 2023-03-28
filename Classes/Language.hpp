@@ -24,6 +24,10 @@ public:
     static inline void init(Config& config){ s_pLang = std::make_unique<Language>(config); };
     static inline auto& getInstance() { return *s_pLang; };
 
+    inline void updateLanguage(const std::string& key) {
+        m_curData = &m_lang[key].first;
+    }
+
     inline auto& operator[](const std::string_view& key) { return (*m_curData)[key.data()]; }
 };
 

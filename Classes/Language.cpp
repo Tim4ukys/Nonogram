@@ -2,7 +2,7 @@
 // Created by tim4ukys on 25.03.2023.
 //
 
-#include <filesystem>
+//#include <filesystem>
 #include <cocos2d.h>
 #include "Language.hpp"
 #include "json.hpp"
@@ -10,11 +10,18 @@
 
 USING_NS_CC;
 
+inline bool ends_with(std::string const & value, std::string const & ending)
+{
+    if (ending.size() > value.size()) return false;
+    return std::equal(ending.rbegin(), ending.rend(), value.rbegin());
+}
+
 Language::Language(Config& config) {
-    for (auto& files : std::filesystem::directory_iterator(FileUtils::getInstance()->getDefaultResourceRootPath() + "conf/lang/")) {
-        const auto lKey = snippets::getFileName(files.path().string());
-        auto fd = FileUtils::getInstance()->getDataFromFile(files.path().string());
-        nlohmann::json j = nlohmann::json::parse(std::string((char*)fd.getBytes(), (size_t)fd.getSize()));
+    for (auto& file : FileUtils::getInstance()->listFiles("conf/lang/")) {
+        if (!ends_with(file, ".json")) continue;
+
+        const auto lKey = snippets::getFileName(file);
+        nlohmann::json j = nlohmann::json::parse(FileUtils::getInstance()->getStringFromFile("conf/lang/" + lKey + ".json"));
         auto fullName = j["name"].get<std::string>();
         j.erase("name");
 
@@ -28,5 +35,5 @@ Language::Language(Config& config) {
         }
         m_lang.insert({lKey, {dataItem1, fullName}});
     }
-    m_curData = &m_lang[config["language"].get<std::string>()].first;
+    updateLanguage(config["language"].get<std::string>());
 }
