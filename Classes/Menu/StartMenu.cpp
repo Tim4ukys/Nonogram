@@ -47,10 +47,10 @@ bool StartMenu::init()
 
     auto mnLevel = MenuItemLabel::create(Label::createWithTTF(FontManager::mainMenu, lang["levels"]),
         [](Ref* sender) {
-            Director::getInstance()->pushScene(SelectLevel::create());
+            Director::getInstance()->replaceScene(SelectLevel::create());
         });
     auto mnExit = MenuItemLabel::create(Label::createWithTTF(FontManager::mainMenu, lang["exit"]),
-        [&](Ref* sender){
+        [](Ref* sender){
             Director::getInstance()->end();
 
             #if CC_TARGET_PLATFORM == CC_PLATFORM_IOS
