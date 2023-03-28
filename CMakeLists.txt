@@ -80,7 +80,6 @@ list(APPEND GAME_SOURCE
         Classes/Config.cpp
         Classes/Language.cpp
 
-     Classes/Menu/AbstractMenu.cpp
      Classes/Menu/StartMenu.cpp
      Classes/Menu/SelectLevel.cpp
      )
