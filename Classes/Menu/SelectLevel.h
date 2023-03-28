@@ -3,13 +3,13 @@
 
 #include "AbstractMenu.hpp"
 
-class SelectLevel : public AbstractMenu {
+class SelectLevel : public AbstractMenu<true> {
 public:
     static inline cocos2d::Scene* createScene() {
         return SelectLevel::create();
     }
 
-    virtual void onAddChildToScrollView(cocos2d::Layer const* pScrollView, const float scrlWidth, float &contentSize) final;
+    virtual void onAddChildToLayer(cocos2d::Layer const* pScrollView, const float widthLayer, float *pContentSize) final;
 
     CREATE_FUNC(SelectLevel);
 };

@@ -1,34 +1,38 @@
-{
-    "groups": [
-        {
-            "name": "Местная легенда",
-            "complexity": "100x100",
-            "levels": [ ]
-        },
-        {
-            "name": "Альфа",
-            "complexity": "50x50",
-            "levels": [ ]
-        },
-        {
-            "name": "Бывалый",
-            "complexity": "25x25",
-            "levels": [ ]
-        },
-        {
-            "name": "Начинающий",
-            "complexity": "10x10",
-            "levels": [ ]
-        },
-        {
-            "name": "Чайник",
-            "complexity": "5x5",
-            "levels": [ ]
-        },
-        {
-            "name": "Шнырь",
-            "complexity": "2x2",
-            "levels": [ ]
-        }
-    ]
-}
+[
+    {
+        "codename": "ll",
+        "complexity": "100x100",
+        "count": 2,
+        "levels": [ ]
+    },
+    {
+        "codename": "alpha",
+        "complexity": "50x50",
+        "count": 3,
+        "levels": [ ]
+    },
+    {
+        "codename": "veteran",
+        "complexity": "25x25",
+        "count": 4,
+        "levels": [ ]
+    },
+    {
+        "codename": "novice",
+        "complexity": "10x10",
+        "count": 13,
+        "levels": [ ]
+    },
+    {
+        "codename": "kettle",
+        "complexity": "5x5",
+        "count": 7,
+        "levels": [ ]
+    },
+    {
+        "codename": "guard",
+        "complexity": "2x2",
+        "count": 5,
+        "levels": [ ]
+    }
+]
