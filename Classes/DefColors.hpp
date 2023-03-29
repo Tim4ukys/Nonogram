@@ -11,8 +11,10 @@ public:
     static inline const cocos2d::Color3B MainMenuTextLogo{158, 149, 171};
     static inline const cocos2d::Color3B menuItemLabel{160, 151, 189};
 
-    static inline const cocos2d::Color3B selectMenuTitle{160, 151, 189};
+    static inline const cocos2d::Color3B selectMenuTitle{menuItemLabel};
     static inline const cocos2d::Color3B selectMenuRama{74, 74, 74};
+
+    static inline const cocos2d::Color3B selectLanguage{menuItemLabel};
 };
 
 #endif // __DEF_COLORS_HPP__
