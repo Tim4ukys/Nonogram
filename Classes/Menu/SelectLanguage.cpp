@@ -31,9 +31,9 @@ void SelectLanguage::onAddChildToLayer(cocos2d::Layer const* pMenu, const float 
         const float off = (sizeFlag.width + margin + (sizeLabel.width / 2)) - ((sizeLabel.width + sizeFlag.width + margin) / 2);
 //        flag->setPosition({ visibleSize.width / 2 - (sizeLabel.width + sizeFlag.width) / 2 - margin, -1*(sizeFlag.height / 2) });
         flag->setPosition({-1 * margin, 0});
-        flag->setAnchorPoint({1.0f, 1 / (sizeFlag.height - sizeLabel.height)});
+        flag->setAnchorPoint({1.0f, 1 / (sizeFlag.height - (sizeFlag.height - sizeLabel.height))});
 
-        label->setPosition({off, 0 });
+        label->setPosition({off, 0});
         label->addChild(flag);
 
         auto ui = MenuItemLabel::create(label,
