@@ -17,6 +17,12 @@ namespace snippets {
         return m[2].str();
     }
 
+    template<typename T>
+    inline void fixResolution(T*& img) {
+        const auto fmSize = cocos2d::Director::getInstance()->getOpenGLView()->getFrameSize();
+        img->setScale(MIN(fmSize.width / 320, fmSize.height / 480));
+    }
+
     inline cocos2d::Sprite* loadSpriteWithFixResolution(const std::string& path) {
         auto* r = cocos2d::Sprite::create(path);
         const auto fmSize = cocos2d::Director::getInstance()->getOpenGLView()->getFrameSize();

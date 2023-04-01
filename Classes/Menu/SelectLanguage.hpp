@@ -7,14 +7,15 @@
 
 #include "AbstractMenu.hpp"
 
-class SelectLanguage : public AbstractMenu<false> {
+class SelectLanguage : public AbstractMenu {
 public:
-    static inline cocos2d::Scene* createScene() {
-        return SelectLanguage::create();
+    explicit SelectLanguage() {
+        m_nWhatAdd = WhatAdd::MENU;
     }
 
-    virtual void onAddChildToLayer(cocos2d::Layer const* pMenu, const float widthLayer, float *pContentSize) final;
+    void onReadyAddChild(std::any sucker, float widthLayer, float *pContentSize) override;
 
+    static cocos2d::Scene* createScene();
     CREATE_FUNC(SelectLanguage);
 };
 

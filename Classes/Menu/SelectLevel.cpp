@@ -7,10 +7,15 @@
 
 #include "ui/CocosGUI.h"
 
+cocos2d::Scene *SelectLevel::createScene() {
+    return SelectLevel::create();
+}
+
 USING_NS_CC;
 
-void SelectLevel::onAddChildToLayer(cocos2d::Layer const* pScrollView, const float widthLayer, float *pContentSize)
+void SelectLevel::onReadyAddChild(std::any sucker, float widthLayer, float *pContentSize)
 {
+    auto pScrollView = std::any_cast<ui::ScrollView*>(sucker);
     nlohmann::json j;
     snippets::loadJSON("levels/levels.json", j);
     auto& lang = Language::getInstance()["selectLevel"];
@@ -46,7 +51,7 @@ void SelectLevel::onAddChildToLayer(cocos2d::Layer const* pScrollView, const flo
                 btn->setPosition({ marginSide + off*(i+1), *pContentSize + btn->getContentSize().height/2 });
                 btn->setColor(DefColors::selectMenuRama);
                 if (hBtn == 0.0f) hBtn = btn->getContentSize().height * btn->getScaleY();
-                ((ui::ScrollView*)pScrollView)->addChild(btn);
+                pScrollView->addChild(btn);
             }
             *pContentSize += hBtn;
         }
@@ -56,6 +61,6 @@ void SelectLevel::onAddChildToLayer(cocos2d::Layer const* pScrollView, const flo
         titleLG->setPosition({widthLayer/2, *pContentSize + titleLG->getContentSize().height/2});
         titleLG->setColor(DefColors::selectMenuTitle);
         *pContentSize += marginBetweenGR + titleLG->getContentSize().height;
-        ((ui::ScrollView*)pScrollView)->addChild(titleLG);
+        pScrollView->addChild(titleLG);
     }
 }

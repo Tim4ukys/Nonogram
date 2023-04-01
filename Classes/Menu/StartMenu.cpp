@@ -48,10 +48,10 @@ bool StartMenu::init()
 
     auto mnLevel = MenuItemLabel::create(Label::createWithTTF(FontManager::mainMenu, lang["levels"]),
         [](Ref* sender) {
-            Director::getInstance()->replaceScene(SelectLevel::create());
+            Director::getInstance()->replaceScene(SelectLevel::createScene());
         });
     auto mnSelectLang = MenuItemLabel::create(Label::createWithTTF(FontManager::mainMenu, lang["lang"]),
-                                              [](Ref* sender) { Director::getInstance()->replaceScene(SelectLanguage::create()); });
+                                              [](Ref* sender) { Director::getInstance()->replaceScene(SelectLanguage::createScene()); });
     auto mnExit = MenuItemLabel::create(Label::createWithTTF(FontManager::mainMenu, lang["exit"]),
         [](Ref* sender){
             Director::getInstance()->end();

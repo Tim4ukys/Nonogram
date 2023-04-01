@@ -1,90 +1,36 @@
 #ifndef __ABSTRACT_MENU_HPP__
 #define __ABSTRACT_MENU_HPP__
 
-#include "DefColors.hpp"
-#include "FontManager.h"
-#include "Language.hpp"
-#include "StartMenu.h"
-
-#include "ui/CocosGUI.h"
-
+#include <cocos2d.h>
+#include <any>
 #include <boost/signals2.hpp>
 
-template<bool addScrollView>
+/**
+ * Шаблон меню, которые будут вызываться из главного меню
+ * @date 01.04.23
+ */
 class AbstractMenu : public cocos2d::Scene  {
 protected:
     boost::signals2::signal<void()> m_onClickButtonBack;
 
+    enum class WhatAdd {
+        NONE,
+
+        SCROLL_VIEW,
+        MENU
+    };
+    WhatAdd m_nWhatAdd = WhatAdd::NONE;
+
 public:
-    virtual bool init() final
-    {
-        USING_NS_CC;
+    bool init() override;
 
-        if (!Scene::init()) return false;
-
-        const auto visibleSize = Director::getInstance()->getVisibleSize();
-        const Vec2 origin = Director::getInstance()->getVisibleOrigin();
-
-        // set bg color
-        this->addChild(LayerColor::create(DefColors::MenuBackground), -1);
-
-        // ------------
-        // Scroll view or empty layer
-
-#ifdef CC_PLATFORM_PC
-        constexpr float marginSide = 20.f;
-#else
-        constexpr float marginSide = 10.f;
-#endif
-        const float scrlWidth = visibleSize.width - marginSide*2;
-        const float maxH = visibleSize.height - 50 /*низ*/ - 15 /*верх*/;
-
-        if constexpr (addScrollView) {
-            auto scrl = ui::ScrollView::create();
-            scrl->setDirection(ui::ScrollView::Direction::VERTICAL);
-            // scrl->setBackGroundColor({0xac, 0xac, 0xac});
-            scrl->setBackGroundColorType(ui::Layout::BackGroundColorType::NONE);
-            // scrl->setScrollBarAutoHideEnabled(true);
-            scrl->setScrollBarEnabled(false);
-
-            // Добавляем сам контент
-            float contentSize{};
-            onAddChildToLayer((Layer*)scrl, scrlWidth, &contentSize);
-
-            scrl->setContentSize({scrlWidth, MIN(maxH, contentSize)});
-            scrl->setInnerContainerSize({scrlWidth, contentSize});
-            scrl->setAnchorPoint({0.0f, 1.0f});
-            scrl->setPosition({origin.x + marginSide, origin.y + visibleSize.height - 15});
-            scrl->setBounceEnabled(contentSize > maxH);
-            this->addChild(scrl);
-        }
-        else {
-            auto menu = Menu::create();
-            onAddChildToLayer(menu, scrlWidth, (float*)&maxH);
-            this->addChild(menu);
-        }
-
-        // ------------
-        // button "go to back"
-
-        auto back = MenuItemLabel::create(
-                Label::createWithTTF(FontManager::mainMenu, Language::getInstance()["absMenu"]["back"]),
-                [&](Ref* sender){
-                    m_onClickButtonBack();
-                    Director::getInstance()->replaceScene(StartMenu::create());
-                }
-        );
-        back->setPosition(origin.x + visibleSize.width - back->getContentSize().width/2 - 20, origin.y + back->getContentSize().height/2 + 20);
-        back->setColor(DefColors::menuItemLabel);
-
-        auto menu = Menu::create(back, NULL);
-        menu->setPosition(Vec2::ZERO);
-        this->addChild(menu);
-
-        return true;
-    }
-
-    virtual void onAddChildToLayer(cocos2d::Layer const* pLayer, const float widthLayer, float *pContentSize) = 0;
+    /**
+     * Вызывается в тот момент, когда инициализируется сцена
+     * @param sucker Тот, в кого будем запихивать наш треш
+     * @param widthLayer Размер доступной области
+     * @param pContentSize Размер получившийся области(только при WhatAdd::SCROLL_VIEW)
+     */
+    virtual void onReadyAddChild(std::any sucker, float widthLayer, float *pContentSize = nullptr) = 0;
 };
 
 #endif // __ABSTRACT_MENU_HPP__

@@ -8,10 +8,17 @@
 #include "Snippets.hpp"
 #include "FontManager.h"
 #include "Config.hpp"
+#include "DefColors.hpp"
+
+cocos2d::Scene *SelectLanguage::createScene() {
+    return SelectLanguage::create();
+}
 
 USING_NS_CC;
 
-void SelectLanguage::onAddChildToLayer(cocos2d::Layer const* pMenu, const float widthLayer, float *pContentSize) {
+void SelectLanguage::onReadyAddChild(std::any sucker, float widthLayer, float *pContentSize) {
+    auto pMenu = std::any_cast<Menu*>(sucker);
+
     m_onClickButtonBack.connect([]() {
         Config::getInstance().save();
     });
@@ -42,8 +49,8 @@ void SelectLanguage::onAddChildToLayer(cocos2d::Layer const* pMenu, const float 
                                             Language::getInstance().updateLanguage(lk);
                                             Director::getInstance()->replaceScene(SelectLanguage::create());
                                         });
-        ((cocos2d::Menu*)pMenu)->addChild(ui);
+        pMenu->addChild(ui);
     }
-    ((Menu*)pMenu)->alignItemsVerticallyWithPadding(35.f);
-    ((cocos2d::Menu*)pMenu)->setPosition({origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2});
+    pMenu->alignItemsVerticallyWithPadding(35.f);
+    pMenu->setPosition({origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2});
 }
