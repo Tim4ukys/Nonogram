@@ -77,5 +77,13 @@ bool AbstractMenu::init() {
     menu->setPosition(Vec2::ZERO);
     this->addChild(menu);
 
+    auto listener = EventListenerKeyboard::create();
+    listener->onKeyReleased = [](EventKeyboard::KeyCode keyCode, Event* event) {
+        if (keyCode == EventKeyboard::KeyCode::KEY_BACK) {
+            Director::getInstance()->replaceScene(StartMenu::createScene());
+        }
+    };
+    _eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
+
     return true;
 }
