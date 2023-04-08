@@ -4,6 +4,7 @@
 #include "Snippets.hpp"
 #include "DefColors.hpp"
 #include "Language.hpp"
+#include "GameMap.hpp"
 
 #include "ui/CocosGUI.h"
 
@@ -47,7 +48,13 @@ void SelectLevel::onReadyAddChild(std::any sucker, float widthLayer, float *pCon
             *pContentSize += marginBetweenButton;
             float hBtn{};
             for (size_t i{}; i < lCount; ++i) {
-                auto btn = snippets::loadSpriteWithFixResolution("img/levels/none.png");
+                auto btn = ui::Button::create("img/levels/none.png");
+                snippets::fixResolution(btn);
+                btn->addClickEventListener(
+                        [n = (i + x), lv = level["codename"].get<std::string>()](Ref* sender){
+                            CCLOG("Level number %zu in %s", n, lv.c_str());
+                            Director::getInstance()->replaceScene(GameMap::createScene("levels/" + lv + "/" + std::to_string(n)));
+                        });
                 btn->setPosition({ marginSide + off*(i+1), *pContentSize + btn->getContentSize().height/2 });
                 btn->setColor(DefColors::selectMenuRama);
                 if (hBtn == 0.0f) hBtn = btn->getContentSize().height * btn->getScaleY();

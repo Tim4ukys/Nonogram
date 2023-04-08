@@ -15,6 +15,10 @@ public:
     static inline const cocos2d::Color3B selectMenuRama{74, 74, 74};
 
     static inline const cocos2d::Color3B selectLanguage{menuItemLabel};
+
+    static inline const cocos2d::Color3B gameMapVJ{menuItemLabel};
+    static inline const cocos2d::Color4F gameMapSideRamka{ 0.55f, 0.55f, 0.65f, 1.f };
+    static inline const cocos2d::Color4F gameMapRamka{ 0.35f, 0.35f, 0.45f, 1.f };
 };
 
 #endif // __DEF_COLORS_HPP__

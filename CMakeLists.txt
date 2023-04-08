@@ -84,6 +84,7 @@ list(APPEND GAME_SOURCE
      Classes/Menu/StartMenu.cpp
      Classes/Menu/SelectLevel.cpp
         Classes/Menu/SelectLanguage.cpp
+        Classes/Menu/GameMap.cpp
      )
 list(APPEND GAME_HEADER
      Classes/AppDelegate.h
@@ -98,6 +99,7 @@ list(APPEND GAME_HEADER
      Classes/Menu/StartMenu.h
      Classes/Menu/SelectLevel.h
         Classes/Menu/SelectLanguage.hpp
+        Classes/Menu/GameMap.hpp
      )
 
 if(ANDROID)
