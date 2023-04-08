@@ -1,38 +1,26 @@
 [
     {
         "codename": "ll",
-        "complexity": "100x100",
-        "count": 2,
-        "levels": [ ]
+        "count": 2
     },
     {
         "codename": "alpha",
-        "complexity": "50x50",
-        "count": 3,
-        "levels": [ ]
+        "count": 3
     },
     {
         "codename": "veteran",
-        "complexity": "25x25",
-        "count": 4,
-        "levels": [ ]
+        "count": 4
     },
     {
         "codename": "novice",
-        "complexity": "10x10",
-        "count": 13,
-        "levels": [ ]
+        "count": 7
     },
     {
         "codename": "kettle",
-        "complexity": "5x5",
-        "count": 7,
-        "levels": [ ]
+        "count": 9
     },
     {
         "codename": "guard",
-        "complexity": "2x2",
-        "count": 5,
-        "levels": [ ]
+        "count": 3
     }
 ]
