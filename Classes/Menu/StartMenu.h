@@ -3,12 +3,11 @@
 
 #include "cocos2d.h"
 
-class StartMenu : public cocos2d::Scene
-{
+class StartMenu : public cocos2d::Scene {
 public:
     static cocos2d::Scene* createScene();
 
-    virtual bool init() final;
+    bool init() override;
     
     CREATE_FUNC(StartMenu);
 };
