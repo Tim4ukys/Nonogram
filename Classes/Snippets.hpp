@@ -9,6 +9,10 @@
 
 namespace snippets {
 
+    inline float calcScaleSize(const float& bef_sz, const float& aft_sz) {
+        return 1 + ((aft_sz - bef_sz) / bef_sz);
+    }
+
     inline std::string getFileName(const std::string &path) {
         std::regex r(R"(((\w+)\.json)+$)");
         std::smatch m;
