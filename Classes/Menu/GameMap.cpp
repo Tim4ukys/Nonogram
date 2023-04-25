@@ -172,7 +172,9 @@ void GameMap::addGameRect() {
         const float lb = (sz_dight - static_cast<float>(countNumbs+1)*m_sd) / static_cast<float>(countNumbs);
         for (int i{}; i < countNumbs; ++i) {
 #ifndef DEBUG_SIDE_NUMBS
-            drawNumb({margin_side + sz_dight - (lb + m_sd)*float(i+1), max_btn + static_cast<float>(x)*off + m_pdwn, lb, off - m_pdwn*2},
+            drawNumb({origin.x + margin_side + sz_dight - (lb + m_sd)*float(i+1),
+                      origin.y + max_btn + static_cast<float>(x)*off + m_pdwn,
+                      lb, off - m_pdwn*2},
                      numbs[i]);
 #else
             auto t = DrawNode::create();
@@ -193,7 +195,8 @@ void GameMap::addGameRect() {
         const float lb = (sz_dight - static_cast<float>(countNumbs+1)*m_pdwn) / static_cast<float>(countNumbs);
         for (int i{}; i < countNumbs; ++i) {
 #ifndef DEBUG_SIDE_NUMBS
-            drawNumb({margin_side + sz_dight + off*static_cast<float>(x) + m_sd, m_pdwn + max_up - sz_dight + static_cast<float>(i)*(lb + m_pdwn),
+            drawNumb({origin.x + margin_side + sz_dight + off*static_cast<float>(x) + m_sd,
+                      origin.y + m_pdwn + max_up - sz_dight + static_cast<float>(i)*(lb + m_pdwn),
                       off - m_sd*2, lb},
                      numbs[i]);
 #else
