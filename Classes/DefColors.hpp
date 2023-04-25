@@ -21,6 +21,8 @@ public:
     static inline const cocos2d::Color4F gameMapRamka{ 0.35f, 0.35f, 0.45f, 1.f };
     static inline const cocos2d::Color4F gameMapActiveBox{0.65f, 0.70f, 0.79f, 1.f};
     static inline const cocos2d::Color4F gameMapDisableBox{0.25f, 0.25f, 0.45f, 1.f};
+    static inline const cocos2d::Color4F gameMapNVLines{0.56f, 0.49f, 0.00f, 0.25f};
+    static inline const cocos2d::Color3B gameMapNumbs{menuItemLabel};
 };
 
 #endif // __DEF_COLORS_HPP__

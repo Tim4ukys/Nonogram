@@ -9,6 +9,8 @@
 
 USING_NS_CC;
 
+//#define DEBUG_SIDE_NUMBS
+
 cocos2d::Scene *GameMap::createScene(const std::string& path) {
     return GameMap::create(path);
 }
@@ -21,12 +23,52 @@ bool GameMap::init() {
 
     constexpr float y = 25.0f;
 
+    loadNumbs();
+
     addVJ(25.0f, y);
     addButtons(y);
     m_fPosGameRectY += y*2;
     addGameRect();
 
     return true;
+}
+
+void GameMap::loadNumbs() {
+    for (size_t i{}; i < 10; ++i)
+        m_arrNumbs[i] = Sprite::create("img/game/" + std::to_string(i) + ".png");
+}
+
+void GameMap::drawNumb(const cocos2d::Rect& r, int n, drawNumbWhatIgnore ignore) {
+    auto getNDel = [](int n)->int {
+        int r{};
+        while (n != 0) {
+            n /= 10;
+            ++r;
+        }
+        return r;
+    };
+
+    const auto ndel = getNDel(n);
+    const float off{r.size.width / static_cast<float>(ndel)};
+    int i{};
+    while (n > 0) {
+        auto sp = Sprite::createWithTexture(m_arrNumbs[n % 10]->getTexture());
+        sp->setAnchorPoint({0.5f, 0.5f});
+        sp->setPosition(r.origin.x + off*static_cast<float>(ndel - ++i) + off/2, r.origin.y + r.size.height/2);
+        sp->setColor(DefColors::gameMapNumbs);
+        Vec2 aftSize;
+        if (ignore == drawNumbWhatIgnore::height) {
+            const auto w = (9 * r.size.height) / 16;
+            aftSize = {MIN(w, off), r.size.height };
+        } else {
+            const auto h = (16 * r.size.width) / 9;
+            aftSize = {off, MIN(off, h)};
+        }
+        auto&& [scX, scY] = snippets::calcScaleSize(sp->getContentSize(), aftSize);
+        sp->setScale(scX, scY);
+        this->addChild(sp);
+        n /= 10;
+    }
 }
 
 void GameMap::loadGameMapFile(const std::string& path) {
@@ -44,6 +86,28 @@ void GameMap::loadGameMapFile(const std::string& path) {
         }
         if (!isEnded) ++m_nCountBox;
     }
+    if (!ln.empty()) m_rightDraw.push_back(ln);
+}
+
+void GameMap::getAllNumbs(GameMap::numbs_from nmb_from, int i, std::vector<int>& out) {
+    if (!out.empty()) out.clear();
+
+    int r{};
+    bool old{};
+    for (int x{}; x < m_nCountBox; ++x) {
+        const auto t = nmb_from == numbs_from::HORIZONTAL ? m_rightDraw[i][x] : m_rightDraw[x][i];
+        if (t) {
+            ++r;
+        } else if (old) {
+            out.push_back(r);
+            r = 0;
+        }
+        old = t;
+    }
+    if (old || out.empty())
+        out.push_back(r);
+
+    std::reverse(out.begin(), out.end());
 }
 
 void GameMap::addGameRect() {
@@ -98,31 +162,62 @@ void GameMap::addGameRect() {
 
     this->addChild(ln);
 
-    constexpr float alphaNvLines = 0.25f;
+    std::vector<int> numbs;
+    for (int x{}; x < m_nCountBox; ++x) {
+        getAllNumbs(numbs_from::HORIZONTAL, m_nCountBox - x - 1, numbs);
+
+        constexpr float m_sd = 5.f;
+        constexpr float m_pdwn = 2.5f;
+        const auto countNumbs = numbs.size();
+        const float lb = (sz_dight - static_cast<float>(countNumbs+1)*m_sd) / static_cast<float>(countNumbs);
+        for (int i{}; i < countNumbs; ++i) {
+#ifndef DEBUG_SIDE_NUMBS
+            drawNumb({margin_side + sz_dight - (lb + m_sd)*float(i+1), max_btn + static_cast<float>(x)*off + m_pdwn, lb, off - m_pdwn*2},
+                     numbs[i]);
+#else
+            auto t = DrawNode::create();
+            const auto pos = Vec2(margin_side + sz_dight - (lb + m_sd)*float(i+1), max_btn + static_cast<float>(x)*off);
+            t->drawSolidRect(pos,
+                             pos + Vec2(lb, off),
+                             Color4F::RED);
+            this->addChild(t);
+#endif
+        }
+    }
+    for (int x{}; x < m_nCountBox; ++x) {
+        getAllNumbs(numbs_from::VERTICAL, x, numbs);
+
+        constexpr float m_sd = 2.5f;
+        constexpr float m_pdwn = 5.f;
+        const auto countNumbs = numbs.size();
+        const float lb = (sz_dight - static_cast<float>(countNumbs+1)*m_pdwn) / static_cast<float>(countNumbs);
+        for (int i{}; i < countNumbs; ++i) {
+#ifndef DEBUG_SIDE_NUMBS
+            drawNumb({margin_side + sz_dight + off*static_cast<float>(x) + m_sd, m_pdwn + max_up - sz_dight + static_cast<float>(i)*(lb + m_pdwn),
+                      off - m_sd*2, lb},
+                     numbs[i]);
+#else
+            auto t = DrawNode::create();
+            const auto pos = Vec2(margin_side + sz_dight + off*static_cast<float>(x) + m_sd, m_pdwn + max_up - sz_dight + static_cast<float>(i)*(lb + m_pdwn));
+            t->drawSolidRect(pos,
+                             pos + Vec2(off - m_sd*2, lb),
+                             Color4F::RED);
+            this->addChild(t);
+#endif
+        }
+    }
+
     auto& [nvLinesW, nvLinesH] = m_arrNavLines;
     nvLinesW = DrawNode::create();
-    nvLinesW->drawSolidRect(Vec2::ZERO, {sz_line_w - sz_empty, off}, {0.56f, 0.49f, 0.00f, alphaNvLines});
+    nvLinesW->drawSolidRect(Vec2::ZERO, {sz_line_w, off}, DefColors::gameMapNVLines);
     nvLinesW->setContentSize({sz_line_w - sz_empty, off});
     nvLinesW->setPosition(origin + Vec2(margin_side + sz_dight, max_btn));
-    nvLinesW->setAnchorPoint({(sz_dight - sz_empty)/(sz_line_w - sz_empty), 0.0f});
+    nvLinesW->setAnchorPoint({sz_dight/(sz_line_w - sz_empty), 0.0f});
     nvLinesH = DrawNode::create();
-    nvLinesH->drawSolidRect(Vec2::ZERO, {off, max_up - sz_empty - max_btn}, {0.56f, 0.49f, 0.00f, alphaNvLines});
+    nvLinesH->drawSolidRect(Vec2::ZERO, {off, max_up - max_btn}, DefColors::gameMapNVLines);
     nvLinesH->setPosition(origin + Vec2(margin_side + sz_dight, max_btn));
     this->addChild(nvLinesW);
     this->addChild(nvLinesH);
-//    nvLinesW->setPositionZ(2);
-//    m_arrNavLines[0]->runAction(MoveTo::create(2, origin + Vec2(margin_side + sz_empty, max_up - sz_empty)));
-//    m_arrNavLines[0]->action
-
-//    nvLinesH = DrawNode::create();
-//    nvLinesH->drawRect({0, 0}, {sz_line_w - sz_empty, off}, {1.0f, 0.87f, 0.00f, 0.50f});
-
-
-
-//    auto bk = DrawNode::create();
-//    bk->drawSolidRect({sz_dight + margin_side, max_btn}, {sz_dight + margin_side + off, max_btn + off}, DefColors::gameMapActiveBox);
-//    bk->setPositionZ(-1);
-//    this->addChild(bk);
 }
 
 GameMap::Box::Box(Vec2 pos, float offset, cocos2d::Scene* sc) {
@@ -141,8 +236,9 @@ GameMap::Box::Box(Vec2 pos, float offset, cocos2d::Scene* sc) {
 }
 
 void GameMap::Box::toggle(GameMap::Box::boxState state) {
-    m_krest->setVisible(state == boxState::KREST);
-    m_rect->setVisible(state == boxState::RECT);
+    m_krest->setVisible(state == boxState::KREST && m_oldState != GameMap::Box::boxState::KREST);
+    m_rect->setVisible(state == boxState::RECT && m_oldState != GameMap::Box::boxState::RECT);
+    m_oldState = m_oldState != state ? m_oldState = state : GameMap::Box::boxState::NONE;
 }
 
 void GameMap::addButtons(float y) {
@@ -156,13 +252,10 @@ void GameMap::addButtons(float y) {
     krest->setAnchorPoint({1.f, 0.5f});
     krest->setPosition(origin + Vec2(vs_width - margin_side, m_fPosGameRectY / 2 + y));
     krest->addTouchEventListener([this](Ref* sender, ui::Widget::TouchEventType type){
-        switch (type) {
-            case ui::Widget::TouchEventType::BEGAN:
-                m_boxMap[m_nPosY*m_nCountBox + m_nPosX]->toggle(Box::boxState::KREST);
-                break;
-            default:
-                break;
-        }
+        if (type == ui::Widget::TouchEventType::BEGAN
+            && m_arrNavLines[0]->getNumberOfRunningActions() == 0
+            && m_arrNavLines[1]->getNumberOfRunningActions() == 0)
+            m_boxMap[m_nPosY*m_nCountBox + m_nPosX]->toggle(Box::boxState::KREST);
     });
 
     const auto sz_krest = krest->getContentSize() * krest->getScale();
@@ -172,13 +265,10 @@ void GameMap::addButtons(float y) {
     galka->setAnchorPoint({1.f, 0.5f});
     galka->setPosition(origin + Vec2(vs_width - margin_side - sz_krest.width - margin, m_fPosGameRectY / 2 + y));
     galka->addTouchEventListener([this](Ref* sender, ui::Widget::TouchEventType type){
-        switch (type) {
-            case ui::Widget::TouchEventType::BEGAN:
-                m_boxMap[m_nPosY*m_nCountBox + m_nPosX]->toggle(Box::boxState::RECT);
-                break;
-            default:
-                break;
-        }
+        if (type == ui::Widget::TouchEventType::BEGAN
+            && m_arrNavLines[0]->getNumberOfRunningActions() == 0
+            && m_arrNavLines[1]->getNumberOfRunningActions() == 0)
+            m_boxMap[m_nPosY*m_nCountBox + m_nPosX]->toggle(Box::boxState::RECT);
     });
     this->addChild(krest);
     this->addChild(galka);
@@ -195,9 +285,6 @@ void GameMap::addVJ(float x, float y) {
             constexpr float dur_action = 0.10f;
             switch (type)
             {
-//                case ui::Widget::TouchEventType::BEGAN:
-//                    CCLOG("button[%d] began", a);
-//                    break;
                 case ui::Widget::TouchEventType::BEGAN:
                 {
                     auto add = [this](auto& pos) {
@@ -245,7 +332,8 @@ void GameMap::registrationKBJ() {
     auto ls = [&](EventKeyboard::KeyCode keyCode, Event* event, bool st, ui::Widget::TouchEventType tch) {
         switch (keyCode) {
             case EventKeyboard::KeyCode::KEY_BACK:
-                Director::getInstance()->replaceScene(StartMenu::createScene());
+                if (tch == ui::Widget::TouchEventType::ENDED)
+                    Director::getInstance()->replaceScene(StartMenu::createScene());
                 break;
             case EventKeyboard::KeyCode::KEY_DPAD_UP:
             case EventKeyboard::KeyCode::KEY_UP_ARROW:

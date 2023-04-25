@@ -7,18 +7,18 @@
 
 #include <cocos2d.h>
 #include <ui/CocosGUI.h>
-//#include <atomic>
 
 class GameMap : public cocos2d::Scene {
     cocos2d::ui::Button* m_Buttons[4];
     std::function<void(cocos2d::Ref*, cocos2d::ui::Widget::TouchEventType)> m_ButtonsCb[4];
-//    std::atomic<>;
 
     float m_fPosGameRectY;
 
     std::vector<std::vector<bool>> m_rightDraw;
     int m_nCountBox{};
     void loadGameMapFile(const std::string& path);
+    enum class numbs_from { VERTICAL, HORIZONTAL };
+    void getAllNumbs(numbs_from nmb_from, int i, std::vector<int>& out);
 
     int m_nPosX{}, m_nPosY{};
     std::vector<cocos2d::Vec2> m_arrPositionsMap;
@@ -33,7 +33,7 @@ class GameMap : public cocos2d::Scene {
         };
 
     private:
-//        boxState m_oldState{boxState::NONE};
+        boxState m_oldState{boxState::NONE};
 
         cocos2d::Sprite* m_krest;
         cocos2d::DrawNode* m_rect;
@@ -50,6 +50,11 @@ class GameMap : public cocos2d::Scene {
     void addVJ(float x, float y);
     void addGameRect();
     void registrationKBJ();
+
+    cocos2d::Sprite* m_arrNumbs[10];
+    void loadNumbs();
+    enum class drawNumbWhatIgnore { height, width };
+    void drawNumb(const cocos2d::Rect& r, int n, drawNumbWhatIgnore ignore = drawNumbWhatIgnore::height);
 
 public:
     static cocos2d::Scene* createScene(const std::string& path);
