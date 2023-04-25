@@ -9,6 +9,10 @@
 
 namespace snippets {
 
+    inline cocos2d::Vec2 calcScaleSize(const cocos2d::Vec2& bef_sz, const cocos2d::Vec2& aft_sz) {
+        return {1 + ((aft_sz.x - bef_sz.x) / bef_sz.x), 1 + ((aft_sz.y - bef_sz.y) / bef_sz.y)};
+    }
+
     inline float calcScaleSize(const float& bef_sz, const float& aft_sz) {
         return 1 + ((aft_sz - bef_sz) / bef_sz);
     }
