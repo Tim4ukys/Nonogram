@@ -76,6 +76,8 @@ void GameMap::loadGameMapFile(const std::string& path) {
     bool isEnded{};
     std::vector<bool> ln;
     for (char& s : file) {
+        if (s == '\r') continue;
+
         if (s != '\n') {
             ln.push_back(s == 'X');
         } else {
