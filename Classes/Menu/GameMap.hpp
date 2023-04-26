@@ -10,7 +10,8 @@
 
 class GameMap : public cocos2d::Scene {
     cocos2d::ui::Button* m_Buttons[4];
-    std::function<void(cocos2d::Ref*, cocos2d::ui::Widget::TouchEventType)> m_ButtonsCb[4];
+    using fncTouchEventListener = void(cocos2d::Ref*, cocos2d::ui::Widget::TouchEventType);
+    std::function<fncTouchEventListener> m_ButtonsCb[4];
 
     float m_fPosGameRectY;
 
@@ -46,15 +47,21 @@ class GameMap : public cocos2d::Scene {
     };
     std::vector<std::unique_ptr<Box>> m_boxMap;
 
+    cocos2d::ui::Button* m_Rect;
+    std::function<fncTouchEventListener> m_RectCb;
+    cocos2d::ui::Button* m_Krest;
+    std::function<fncTouchEventListener> m_KrestCb;
     void addButtons(float y);
-    void addVJ(float x, float y);
-    void addGameRect();
+
     void registrationKBJ();
+    void addVJ(float x, float y);
+
+    void addGameRect();
 
     cocos2d::Sprite* m_arrNumbs[10];
     void loadNumbs();
-    enum class drawNumbWhatIgnore { height, width };
-    void drawNumb(const cocos2d::Rect& r, int n, drawNumbWhatIgnore ignore = drawNumbWhatIgnore::height);
+    enum class drawNumbFlags { numbsLeft, numbsUp };
+    void drawNumb(const cocos2d::Rect& r, int n, drawNumbFlags flag = drawNumbFlags::numbsLeft);
 
 public:
     static cocos2d::Scene* createScene(const std::string& path);

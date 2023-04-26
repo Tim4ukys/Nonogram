@@ -38,7 +38,7 @@ void GameMap::loadNumbs() {
         m_arrNumbs[i] = Sprite::create("img/game/" + std::to_string(i) + ".png");
 }
 
-void GameMap::drawNumb(const cocos2d::Rect& r, int n, drawNumbWhatIgnore ignore) {
+void GameMap::drawNumb(const cocos2d::Rect& r, int n, drawNumbFlags flag) {
     auto getNDel = [](int n)->int {
         int r{};
         while (n != 0) {
@@ -48,25 +48,38 @@ void GameMap::drawNumb(const cocos2d::Rect& r, int n, drawNumbWhatIgnore ignore)
         return r;
     };
 
-    const auto ndel = getNDel(n);
+    bool isZero;
+    const auto ndel = !(isZero = n == 0) ? getNDel(n) : 1;
+
     const float off{r.size.width / static_cast<float>(ndel)};
+
+    Vec2 aftSize;
+    if (flag == drawNumbFlags::numbsLeft) {
+        const auto w = (9 * r.size.height) / 16;
+        aftSize = { MIN(w, off), r.size.height };
+    } else {
+        auto h = r.size.height;
+        auto w = (9 * h) / 16;
+        if (w > off) {
+            w = off;
+            h = (16 * w) / 9;
+        }
+        aftSize = {w, h};
+    }
+
     int i{};
-    while (n > 0) {
+    while (n > 0 || isZero) {
         auto sp = Sprite::createWithTexture(m_arrNumbs[n % 10]->getTexture());
         sp->setAnchorPoint({0.5f, 0.5f});
-        sp->setPosition(r.origin.x + off*static_cast<float>(ndel - ++i) + off/2, r.origin.y + r.size.height/2);
+        sp->setPosition(r.origin.x + (r.size.width - aftSize.x*float(ndel)) / 2 + aftSize.x*float(ndel - ++i) + aftSize.x/2,
+                        r.origin.y + r.size.height/2);
         sp->setColor(DefColors::gameMapNumbs);
-        Vec2 aftSize;
-        if (ignore == drawNumbWhatIgnore::height) {
-            const auto w = (9 * r.size.height) / 16;
-            aftSize = {MIN(w, off), r.size.height };
-        } else {
-            const auto h = (16 * r.size.width) / 9;
-            aftSize = {off, MIN(off, h)};
-        }
+
         auto&& [scX, scY] = snippets::calcScaleSize(sp->getContentSize(), aftSize);
         sp->setScale(scX, scY);
         this->addChild(sp);
+
+        isZero = false;
         n /= 10;
     }
 }
@@ -200,7 +213,7 @@ void GameMap::addGameRect() {
             drawNumb({origin.x + margin_side + sz_dight + off*static_cast<float>(x) + m_sd,
                       origin.y + m_pdwn + max_up - sz_dight + static_cast<float>(i)*(lb + m_pdwn),
                       off - m_sd*2, lb},
-                     numbs[i]);
+                     numbs[i], drawNumbFlags::numbsUp);
 #else
             auto t = DrawNode::create();
             const auto pos = Vec2(margin_side + sz_dight + off*static_cast<float>(x) + m_sd, m_pdwn + max_up - sz_dight + static_cast<float>(i)*(lb + m_pdwn));
@@ -252,31 +265,33 @@ void GameMap::addButtons(float y) {
 
     constexpr float margin_side = 25.f;
     constexpr float margin = 17.5f;
-    auto krest = ui::Button::create("img/game/krest.png"); snippets::fixResolution(krest);
-    krest->setColor(DefColors::gameMapBTN);
-    krest->setAnchorPoint({1.f, 0.5f});
-    krest->setPosition(origin + Vec2(vs_width - margin_side, m_fPosGameRectY / 2 + y));
-    krest->addTouchEventListener([this](Ref* sender, ui::Widget::TouchEventType type){
+    m_Krest = ui::Button::create("img/game/krest.png"); snippets::fixResolution(m_Krest);
+    m_Krest->setColor(DefColors::gameMapBTN);
+    m_Krest->setAnchorPoint({1.f, 0.5f});
+    m_Krest->setPosition(origin + Vec2(vs_width - margin_side, m_fPosGameRectY / 2 + y));
+    m_KrestCb = [this](Ref* sender, ui::Widget::TouchEventType type){
         if (type == ui::Widget::TouchEventType::BEGAN
             && m_arrNavLines[0]->getNumberOfRunningActions() == 0
             && m_arrNavLines[1]->getNumberOfRunningActions() == 0)
             m_boxMap[m_nPosY*m_nCountBox + m_nPosX]->toggle(Box::boxState::KREST);
-    });
+    };
+    m_Krest->addTouchEventListener(m_KrestCb);
 
-    const auto sz_krest = krest->getContentSize() * krest->getScale();
-    auto galka = ui::Button::create("img/game/galka.png"); snippets::fixResolution(galka);
+    const auto sz_krest = m_Krest->getContentSize() * m_Krest->getScale();
+    m_Rect = ui::Button::create("img/game/galka.png"); snippets::fixResolution(m_Rect);
 
-    galka->setColor(DefColors::gameMapBTN);
-    galka->setAnchorPoint({1.f, 0.5f});
-    galka->setPosition(origin + Vec2(vs_width - margin_side - sz_krest.width - margin, m_fPosGameRectY / 2 + y));
-    galka->addTouchEventListener([this](Ref* sender, ui::Widget::TouchEventType type){
+    m_Rect->setColor(DefColors::gameMapBTN);
+    m_Rect->setAnchorPoint({1.f, 0.5f});
+    m_Rect->setPosition(origin + Vec2(vs_width - margin_side - sz_krest.width - margin, m_fPosGameRectY / 2 + y));
+    m_RectCb = [this](Ref* sender, ui::Widget::TouchEventType type){
         if (type == ui::Widget::TouchEventType::BEGAN
             && m_arrNavLines[0]->getNumberOfRunningActions() == 0
             && m_arrNavLines[1]->getNumberOfRunningActions() == 0)
             m_boxMap[m_nPosY*m_nCountBox + m_nPosX]->toggle(Box::boxState::RECT);
-    });
-    this->addChild(krest);
-    this->addChild(galka);
+    };
+    m_Rect->addTouchEventListener(m_RectCb);
+    this->addChild(m_Krest);
+    this->addChild(m_Rect);
 }
 
 void GameMap::addVJ(float x, float y) {
@@ -359,6 +374,14 @@ void GameMap::registrationKBJ() {
             case EventKeyboard::KeyCode::KEY_LEFT_ARROW:
                 m_ButtonsCb[3](nullptr, tch);
                 m_Buttons[3]->setHighlighted(st);
+                break;
+            case EventKeyboard::KeyCode::KEY_ENTER:
+                m_KrestCb(nullptr, tch);
+                m_Krest->setHighlighted(st);
+                break;
+            case EventKeyboard::KeyCode::KEY_SPACE:
+                m_RectCb(nullptr, tch);
+                m_Rect->setHighlighted(st);
                 break;
             default:
                 break;
