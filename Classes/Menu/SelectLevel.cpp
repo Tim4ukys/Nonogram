@@ -96,12 +96,13 @@ void SelectLevel::onReadyAddChild(std::any sucker, float widthLayer, float *pCon
             *pContentSize += marginBetweenButton;
             float hBtn{};
             for (size_t i{}; i < lCount; ++i) {
-
                 int countBox = 0;
                 std::vector<std::vector<bool>> rightMap;
-                GameMap::stLoadGameMapFile("levels/" + level["codename"].get<std::string>() + "/" + std::to_string((i + x)),
+                const auto levelGroup = level["codename"].get<std::string>();
+                const auto levelID = level["count"].get<int>() - (x + lCount) + i;
+                GameMap::stLoadGameMapFile("levels/" + levelGroup + "/" + std::to_string(levelID),
                                            rightMap, countBox);
-                auto& progr = ProgressGame::getInstance().get(level["codename"].get<std::string>(), i + x, countBox);
+                auto& progr = ProgressGame::getInstance().get(level["codename"].get<std::string>(), levelID, countBox);
                 bool goodMap{true};
                 bool isEmptyMap{true};
                 for (int kx{}; kx < countBox; ++kx) {
@@ -124,7 +125,7 @@ void SelectLevel::onReadyAddChild(std::any sucker, float widthLayer, float *pCon
 
                 snippets::fixResolution(btn);
                 btn->addClickEventListener(
-                        [n = (i + x), lv = level["codename"].get<std::string>()](Ref* sender){
+                        [n = levelID, lv = level["codename"].get<std::string>()](Ref* sender){
                             CCLOG("Level number %zu in %s", n, lv.c_str());
                             Director::getInstance()->replaceScene(GameMap::createScene(lv, static_cast<int>(n)));
                         });
