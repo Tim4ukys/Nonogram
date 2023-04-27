@@ -1,19 +1,11 @@
 [
     {
-        "codename": "ll",
-        "count": 2
-    },
-    {
-        "codename": "alpha",
-        "count": 3
-    },
-    {
         "codename": "veteran",
-        "count": 4
+        "count": 7
     },
     {
         "codename": "novice",
-        "count": 7
+        "count": 10
     },
     {
         "codename": "kettle",
