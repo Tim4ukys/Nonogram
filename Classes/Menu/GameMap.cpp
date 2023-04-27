@@ -6,13 +6,14 @@
 #include "Snippets.hpp"
 #include "DefColors.hpp"
 #include "StartMenu.h"
+#include "ProgressGame.hpp"
 
 USING_NS_CC;
 
 //#define DEBUG_SIDE_NUMBS
 
-cocos2d::Scene *GameMap::createScene(const std::string& path) {
-    return GameMap::create(path);
+cocos2d::Scene *GameMap::createScene(const std::string& group, int levelID) {
+    return GameMap::create(group, levelID);
 }
 
 bool GameMap::init() {
@@ -30,7 +31,20 @@ bool GameMap::init() {
     m_fPosGameRectY += y*2;
     addGameRect();
 
+    auto& pr = ProgressGame::getInstance().get(m_levelGroup, m_nLevelID, m_nCountBox);
+    for (int x{}; x < m_nCountBox*m_nCountBox; ++x) {
+        m_boxMap[x]->toggle(static_cast<Box::boxState>(pr[x].get<int>()));
+    }
+
     return true;
+}
+
+GameMap::~GameMap() {
+    auto& pr = ProgressGame::getInstance().get(m_levelGroup, m_nLevelID, m_nCountBox);
+    for (int x{}; x < m_nCountBox*m_nCountBox; ++x) {
+        pr[x] = m_boxMap[x]->getState();
+    }
+    ProgressGame::getInstance().save();
 }
 
 void GameMap::loadNumbs() {
@@ -84,7 +98,7 @@ void GameMap::drawNumb(const cocos2d::Rect& r, int n, drawNumbFlags flag) {
     }
 }
 
-void GameMap::loadGameMapFile(const std::string& path) {
+void GameMap::stLoadGameMapFile(const std::string& path, std::vector<std::vector<bool>>& gmMap, int& count) {
     auto file = FileUtils::getInstance()->getStringFromFile(path);
     bool isEnded{};
     std::vector<bool> ln;
@@ -95,13 +109,13 @@ void GameMap::loadGameMapFile(const std::string& path) {
             ln.push_back(s == 'X');
         } else {
             isEnded = true;
-            m_rightDraw.push_back(ln);
+            gmMap.push_back(ln);
             ln.clear();
             continue;
         }
-        if (!isEnded) ++m_nCountBox;
+        if (!isEnded) ++count;
     }
-    if (!ln.empty()) m_rightDraw.push_back(ln);
+    if (!ln.empty()) gmMap.push_back(ln);
 }
 
 void GameMap::getAllNumbs(GameMap::numbs_from nmb_from, int i, std::vector<int>& out) {

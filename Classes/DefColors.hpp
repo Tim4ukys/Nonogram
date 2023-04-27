@@ -13,6 +13,7 @@ public:
 
     static inline const cocos2d::Color3B selectMenuTitle{menuItemLabel};
     static inline const cocos2d::Color3B selectMenuRama{74, 74, 74};
+    static inline const cocos2d::Color3B selectMenuGood{49, 84, 55};
 
     static inline const cocos2d::Color3B selectLanguage{menuItemLabel};
 

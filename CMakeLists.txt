@@ -79,6 +79,7 @@ list(APPEND GAME_SOURCE
      Classes/FontManager.cpp
         Classes/Config.cpp
         Classes/Language.cpp
+        Classes/ProgressGame.cpp
 
      Classes/Menu/AbstractMenu.cpp
      Classes/Menu/StartMenu.cpp
@@ -91,6 +92,7 @@ list(APPEND GAME_HEADER
      Classes/Snippets.hpp
         Classes/Config.hpp
         Classes/Language.hpp
+        Classes/ProgressGame.hpp
 
      Classes/FontManager.h
      Classes/DefColors.hpp

@@ -15,9 +15,20 @@ class GameMap : public cocos2d::Scene {
 
     float m_fPosGameRectY;
 
+    std::string m_levelGroup;
+    int m_nLevelID;
+
     std::vector<std::vector<bool>> m_rightDraw;
     int m_nCountBox{};
-    void loadGameMapFile(const std::string& path);
+public:
+    static void stLoadGameMapFile(const std::string& path, std::vector<std::vector<bool>>& gmMap, int& count);
+private:
+    inline void loadGameMapFile(const std::string& levelGroup, int levelID) {
+        m_levelGroup = levelGroup;
+        m_nLevelID = levelID;
+        stLoadGameMapFile("levels/" + levelGroup + "/" + std::to_string(levelID), m_rightDraw, m_nCountBox);
+    }
+
     enum class numbs_from { VERTICAL, HORIZONTAL };
     void getAllNumbs(numbs_from nmb_from, int i, std::vector<int>& out);
 
@@ -44,6 +55,7 @@ class GameMap : public cocos2d::Scene {
         ~Box() = default;
 
         void toggle(boxState state);
+        inline auto getState() const noexcept { return static_cast<int>(m_oldState); };
     };
     std::vector<std::unique_ptr<Box>> m_boxMap;
 
@@ -64,23 +76,20 @@ class GameMap : public cocos2d::Scene {
     void drawNumb(const cocos2d::Rect& r, int n, drawNumbFlags flag = drawNumbFlags::numbsLeft);
 
 public:
-    static cocos2d::Scene* createScene(const std::string& path);
+    static cocos2d::Scene* createScene(const std::string& group, int levelID);
 
     bool init() override;
+    ~GameMap();
 
-    static GameMap *create(const std::string& path) {
+    static GameMap *create(const std::string& group, int levelID) {
         GameMap *pRet = new(std::nothrow)GameMap();
-        pRet->loadGameMapFile(path);
 
-        if (pRet && pRet->init()) {
+        if (pRet && (pRet->loadGameMapFile(group, levelID), pRet->init())) {
             pRet->autorelease();
             return pRet;
         }
-        else {
-            delete pRet;
-            pRet = nullptr;
-            return nullptr;
-        }
+        CC_SAFE_DELETE(pRet);
+        return nullptr;
     }
 
 };

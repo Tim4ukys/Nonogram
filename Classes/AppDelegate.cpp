@@ -3,6 +3,7 @@
 #include "FontManager.h"
 #include "Config.hpp"
 #include "Language.hpp"
+#include "ProgressGame.hpp"
 
 #if CC_PLATFORM_LINUX == CC_TARGET_PLATFORM
 #include <SOIL/SOIL.h>
@@ -52,6 +53,7 @@ static int register_all_packages()
     FontManager::init();
     Config::init("conf.json");
     Language::init(Config::getInstance());
+    ProgressGame::init();
     
     return 0; //flag for packages manager
 }
