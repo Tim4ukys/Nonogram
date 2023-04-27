@@ -30,11 +30,7 @@ public:
     template<typename T1, typename T2>
     inline auto& get(T1 group, T2 level, int countBoxInLine) {
         auto& arr = m_j[group];
-        if (!arr.is_array()) {
-            arr.clear();
-            arr = nlohmann::json::array();
-        }
-        if (!isExist(group, level) || !arr[level].is_array()) {
+        if (!arr[level].is_array() || !isExist(group, level)) {
             std::vector<int> tmp(countBoxInLine*countBoxInLine, 0);
             arr[level] = tmp;
         }

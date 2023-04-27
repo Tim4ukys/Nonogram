@@ -5,7 +5,7 @@
 #include "GameMap.hpp"
 #include "Snippets.hpp"
 #include "DefColors.hpp"
-#include "StartMenu.h"
+#include "SelectLevel.h"
 #include "ProgressGame.hpp"
 
 USING_NS_CC;
@@ -39,7 +39,7 @@ bool GameMap::init() {
     return true;
 }
 
-GameMap::~GameMap() {
+void GameMap::saveProgress() {
     auto& pr = ProgressGame::getInstance().get(m_levelGroup, m_nLevelID, m_nCountBox);
     for (int x{}; x < m_nCountBox*m_nCountBox; ++x) {
         pr[x] = m_boxMap[x]->getState();
@@ -366,8 +366,10 @@ void GameMap::registrationKBJ() {
     auto ls = [&](EventKeyboard::KeyCode keyCode, Event* event, bool st, ui::Widget::TouchEventType tch) {
         switch (keyCode) {
             case EventKeyboard::KeyCode::KEY_BACK:
-                if (tch == ui::Widget::TouchEventType::ENDED)
-                    Director::getInstance()->replaceScene(StartMenu::createScene());
+                if (tch == ui::Widget::TouchEventType::ENDED) {
+                    saveProgress();
+                    Director::getInstance()->replaceScene(SelectLevel::createScene());
+                }
                 break;
             case EventKeyboard::KeyCode::KEY_DPAD_UP:
             case EventKeyboard::KeyCode::KEY_UP_ARROW:

@@ -75,11 +75,13 @@ private:
     enum class drawNumbFlags { numbsLeft, numbsUp };
     void drawNumb(const cocos2d::Rect& r, int n, drawNumbFlags flag = drawNumbFlags::numbsLeft);
 
+    void saveProgress();
+
 public:
     static cocos2d::Scene* createScene(const std::string& group, int levelID);
 
     bool init() override;
-    ~GameMap();
+    ~GameMap() override { saveProgress(); }
 
     static GameMap *create(const std::string& group, int levelID) {
         GameMap *pRet = new(std::nothrow)GameMap();
