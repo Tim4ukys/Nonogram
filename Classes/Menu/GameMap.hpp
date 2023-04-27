@@ -63,10 +63,10 @@ private:
     std::function<fncTouchEventListener> m_RectCb;
     cocos2d::ui::Button* m_Krest;
     std::function<fncTouchEventListener> m_KrestCb;
-    void addButtons(float y);
+    void addButtons();
 
     void registrationKBJ();
-    void addVJ(float x, float y);
+    void addVJ();
 
     void addGameRect();
 

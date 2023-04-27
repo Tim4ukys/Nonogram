@@ -22,13 +22,10 @@ bool GameMap::init() {
     // set bg color(-1)
     this->addChild(LayerColor::create(Color4B(DefColors::MenuBackground)), -1);
 
-    constexpr float y = 25.0f;
-
     loadNumbs();
 
-    addVJ(25.0f, y);
-    addButtons(y);
-    m_fPosGameRectY += y*2;
+    addVJ();
+    addButtons();
     addGameRect();
 
     auto& pr = ProgressGame::getInstance().get(m_levelGroup, m_nLevelID, m_nCountBox);
@@ -273,16 +270,19 @@ void GameMap::Box::toggle(GameMap::Box::boxState state) {
     m_oldState = m_oldState != state ? m_oldState = state : GameMap::Box::boxState::NONE;
 }
 
-void GameMap::addButtons(float y) {
+void GameMap::addButtons() {
     const auto [vs_width, vs_height] = Director::getInstance()->getOpenGLView()->getVisibleSize();
     const Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
     constexpr float margin_side = 25.f;
     constexpr float margin = 17.5f;
-    m_Krest = ui::Button::create("img/game/krest.png"); snippets::fixResolution(m_Krest);
+    const float btn_w = (0.5f*vs_width - 2*margin_side - margin)/2;
+
+    m_Krest = ui::Button::create("img/game/krest.png");
+    m_Krest->setScale(snippets::calcScaleSize(m_Krest->getContentSize().width, btn_w));
     m_Krest->setColor(DefColors::gameMapBTN);
     m_Krest->setAnchorPoint({1.f, 0.5f});
-    m_Krest->setPosition(origin + Vec2(vs_width - margin_side, m_fPosGameRectY / 2 + y));
+    m_Krest->setPosition(origin + Vec2(vs_width - margin_side, m_fPosGameRectY / 2));
     m_KrestCb = [this](Ref* sender, ui::Widget::TouchEventType type){
         if (type == ui::Widget::TouchEventType::BEGAN
             && m_arrNavLines[0]->getNumberOfRunningActions() == 0
@@ -292,11 +292,11 @@ void GameMap::addButtons(float y) {
     m_Krest->addTouchEventListener(m_KrestCb);
 
     const auto sz_krest = m_Krest->getContentSize() * m_Krest->getScale();
-    m_Rect = ui::Button::create("img/game/galka.png"); snippets::fixResolution(m_Rect);
-
+    m_Rect = ui::Button::create("img/game/galka.png");
+    m_Rect->setScale(snippets::calcScaleSize(m_Rect->getContentSize().width, btn_w));
     m_Rect->setColor(DefColors::gameMapBTN);
     m_Rect->setAnchorPoint({1.f, 0.5f});
-    m_Rect->setPosition(origin + Vec2(vs_width - margin_side - sz_krest.width - margin, m_fPosGameRectY / 2 + y));
+    m_Rect->setPosition(origin + Vec2(vs_width - margin_side - btn_w - margin, m_fPosGameRectY / 2));
     m_RectCb = [this](Ref* sender, ui::Widget::TouchEventType type){
         if (type == ui::Widget::TouchEventType::BEGAN
             && m_arrNavLines[0]->getNumberOfRunningActions() == 0
@@ -308,13 +308,19 @@ void GameMap::addButtons(float y) {
     this->addChild(m_Rect);
 }
 
-void GameMap::addVJ(float x, float y) {
-    auto origin = Director::getInstance()->getOpenGLView()->getVisibleOrigin();
+void GameMap::addVJ() {
+    const auto origin = Director::getInstance()->getOpenGLView()->getVisibleOrigin();
+    const auto vs_width = Director::getInstance()->getOpenGLView()->getVisibleSize().width;
+
+    constexpr float m_sd = 25.0f;
+    constexpr float m = 10.f;
+    const auto btn_w = (vs_width/2 - m - m_sd)/2;
+
     Size sizeBtn;
     m_fPosGameRectY = 0.0f;
     for (unsigned int i{}; i < 4; ++i) {
         auto& btn = m_Buttons[i];
-        btn = ui::Button::create("img/game/gm_btn.png"); snippets::fixResolution(btn);
+        btn = ui::Button::create("img/game/gm_btn.png");
         btn->addTouchEventListener(m_ButtonsCb[i] = [this, a = i](Ref* sender, ui::Widget::TouchEventType type){
             constexpr float dur_action = 0.10f;
             switch (type)
@@ -349,12 +355,12 @@ void GameMap::addVJ(float x, float y) {
 
         });
         if (m_fPosGameRectY == 0.0f) {
-            sizeBtn = btn->getContentSize() * btn->getScale();
-            m_fPosGameRectY = sizeBtn.height * 2;
+            m_fPosGameRectY = btn_w * 2 + m_sd*2;
         }
+        btn->setScale(snippets::calcScaleSize(btn->getContentSize().height, btn_w));
         btn->setColor(DefColors::gameMapBTN);
         btn->setAnchorPoint({0.5f, 0.0f});
-        btn->setPosition({origin.x + x + sizeBtn.height, origin.y + y + sizeBtn.height});
+        btn->setPosition({origin.x + (vs_width / 4), origin.y + (m_fPosGameRectY / 2)});
         btn->setRotation(static_cast<float>(i) * 90.0f);
         this->addChild(btn);
     }

@@ -79,6 +79,9 @@ void SelectLevel::onReadyAddChild(std::any sucker, float widthLayer, float *pCon
     constexpr float glMagrin = 15.f;
     constexpr int maxCount = 5;
 
+    constexpr float sf_margin = 17.5f;
+    const auto w_btn = (widthLayer - 2*marginSide - 4*sf_margin)/5;
+
     *pContentSize += glMagrin;
 
     for (auto& level : j) {
@@ -91,7 +94,7 @@ void SelectLevel::onReadyAddChild(std::any sucker, float widthLayer, float *pCon
             } else {
                 lCount = maxCount;
             }
-            const float off = (widthLayer - marginSide*2)/(lCount + 1);
+            const float off = (widthLayer - marginSide*2)/static_cast<float>(lCount + 1);
 
             *pContentSize += marginBetweenButton;
             float hBtn{};
@@ -123,13 +126,13 @@ void SelectLevel::onReadyAddChild(std::any sucker, float widthLayer, float *pCon
                     btn->setColor(DefColors::selectMenuRama);
                 }
 
-                snippets::fixResolution(btn);
+                btn->setScale(snippets::calcScaleSize(btn->getContentSize().width, w_btn));
+                btn->setPosition({ marginSide + off*(i+1), *pContentSize + btn->getContentSize().height/2 });
                 btn->addClickEventListener(
                         [n = levelID, lv = level["codename"].get<std::string>()](Ref* sender){
                             CCLOG("Level number %zu in %s", n, lv.c_str());
                             Director::getInstance()->replaceScene(GameMap::createScene(lv, static_cast<int>(n)));
                         });
-                btn->setPosition({ marginSide + off*(i+1), *pContentSize + btn->getContentSize().height/2 });
                 if (hBtn == 0.0f) hBtn = btn->getContentSize().height * btn->getScaleY();
                 pScrollView->addChild(btn);
             }
