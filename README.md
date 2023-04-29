@@ -31,7 +31,7 @@
 [![FastPic.Ru](https://i121.fastpic.org/thumb/2023/0430/68/4eda1a68abcd6ae4a659c7dbd8736868.jpeg)](https://fastpic.org/view/121/2023/0430/4eda1a68abcd6ae4a659c7dbd8736868.png.html) [![FastPic.Ru](https://i121.fastpic.org/thumb/2023/0430/fc/06a9747cdb5b48979ec309e52ca6c0fc.jpeg)](https://fastpic.org/view/121/2023/0430/06a9747cdb5b48979ec309e52ca6c0fc.jpg.html) [![FastPic.Ru](https://i121.fastpic.org/thumb/2023/0430/a1/85e9f1c31380eb8b7b2432a497be5da1.jpeg)](https://fastpic.org/view/121/2023/0430/85e9f1c31380eb8b7b2432a497be5da1.png.html)
 
 ## Благодарность
-Список тех людей, кто помогал в тестировании плагина или находил баги(сорян, кого забыл):
+Список тех людей, кто помогал в тестировании игры или находил баги(сорян, кого забыл):
 ```
 Роман Храбрый
 Шамиль Макаров
