@@ -143,7 +143,7 @@ void GameMap::addGameRect() {
     const auto [vs_width, vs_height] = Director::getInstance()->getOpenGLView()->getVisibleSize();
     const Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-    constexpr float margin_side = 25.f;
+    const float margin_side = snippets::calcMargin(25.f, 320.f, vs_width);
     constexpr float margin_up = 25.f;
     constexpr float sz_dight = 50.f;
     constexpr float sz_empty = 7.5f;
@@ -276,8 +276,8 @@ void GameMap::addButtons() {
     const auto [vs_width, vs_height] = Director::getInstance()->getOpenGLView()->getVisibleSize();
     const Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-    constexpr float margin_side = 25.f;
-    constexpr float margin = 17.5f;
+    const float margin_side = snippets::calcMargin(25.f, 320.f, vs_width);
+    const float margin = snippets::calcMargin(17.5f, 320.f, vs_width);
     const float btn_w = (0.5f*vs_width - 2*margin_side - margin)/2;
 
     m_Krest = ui::Button::create("img/game/krest.png");
@@ -314,8 +314,8 @@ void GameMap::addVJ() {
     const auto origin = Director::getInstance()->getOpenGLView()->getVisibleOrigin();
     const auto vs_width = Director::getInstance()->getOpenGLView()->getVisibleSize().width;
 
-    constexpr float m_sd = 25.0f;
-    constexpr float m = 10.f;
+    const float m_sd = snippets::calcMargin(25.0f, 320.f, vs_width);
+    const float m = snippets::calcMargin(10.0f, 320.f, vs_width);
     const auto btn_w = (vs_width/2 - m - m_sd)/2;
 
     Size sizeBtn;
@@ -362,7 +362,7 @@ void GameMap::addVJ() {
         btn->setScale(snippets::calcScaleSize(btn->getContentSize().height, btn_w));
         btn->setColor(DefColors::gameMapBTN);
         btn->setAnchorPoint({0.5f, 0.0f});
-        btn->setPosition({origin.x + (vs_width / 4), origin.y + (m_fPosGameRectY / 2)});
+        btn->setPosition({origin.x + (vs_width / 4) + m, origin.y + (m_fPosGameRectY / 2)});
         btn->setRotation(static_cast<float>(i) * 90.0f);
         this->addChild(btn);
     }

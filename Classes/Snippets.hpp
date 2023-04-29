@@ -25,6 +25,10 @@ namespace snippets {
         return m[2].str();
     }
 
+    inline float calcMargin(const float& m, const float& befScreenSize, const float& aftScreenSize) {
+        return (m*aftScreenSize)/befScreenSize;
+    }
+
     template<typename T>
     inline void fixResolution(T*& img) {
         const auto fmSize = cocos2d::Director::getInstance()->getOpenGLView()->getFrameSize();
