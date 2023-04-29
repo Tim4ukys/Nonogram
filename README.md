@@ -10,7 +10,8 @@
 
 # Nonogram
 * [Установка](#установка)
-* [Контакты](#контакты)
+* [Системные требования](#системные-требованияoc)
+* [Галерея](#галерея)
 * [Благодарность](#благодарность)
 * [third party](#third-party)
     
@@ -19,11 +20,15 @@
 Чтобы что-то устанавливать надо это скачать (логично). Переходим в [последний релиз](https://github.com/Tim4ukys/Nonogram/releases/latest). В нём три файла: _Nonogram-android.apk, Nonogram-linux64.tar.gz, Nonogram-win32.zip_.
 Первый файл под Android, второй под Linux, последний под Windows.
 
-## Системные требования(OS)
+## Системные требования(OC)
 
 - Windows > 7
 - Android > 4.4
 - Linux = manjaro or arch linux
+
+## Галерея 
+
+[![FastPic.Ru](https://i121.fastpic.org/thumb/2023/0430/68/4eda1a68abcd6ae4a659c7dbd8736868.jpeg)](https://fastpic.org/view/121/2023/0430/4eda1a68abcd6ae4a659c7dbd8736868.png.html) [![FastPic.Ru](https://i121.fastpic.org/thumb/2023/0430/fc/06a9747cdb5b48979ec309e52ca6c0fc.jpeg)](https://fastpic.org/view/121/2023/0430/06a9747cdb5b48979ec309e52ca6c0fc.jpg.html) [![FastPic.Ru](https://i121.fastpic.org/thumb/2023/0430/a1/85e9f1c31380eb8b7b2432a497be5da1.jpeg)](https://fastpic.org/view/121/2023/0430/85e9f1c31380eb8b7b2432a497be5da1.png.html)
 
 ## Благодарность
 Список тех людей, кто помогал в тестировании плагина или находил баги(сорян, кого забыл):
