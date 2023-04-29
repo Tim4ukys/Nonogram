@@ -1,6 +1,7 @@
 #include "StartMenu.h"
 #include "FontManager.h"
 #include "DefColors.hpp"
+#include "Transitions.hpp"
 
 #include "SelectLevel.h"
 #include "SelectLanguage.hpp"
@@ -48,10 +49,10 @@ bool StartMenu::init()
 
     auto mnLevel = MenuItemLabel::create(Label::createWithTTF(FontManager::mainMenu, lang["levels"]),
         [](Ref* sender) {
-            Director::getInstance()->replaceScene(SelectLevel::createScene());
+            Transitions::getInstance().pushScene(SelectLevel::createScene);
         });
     auto mnSelectLang = MenuItemLabel::create(Label::createWithTTF(FontManager::mainMenu, lang["lang"]),
-                                              [](Ref* sender) { Director::getInstance()->replaceScene(SelectLanguage::createScene()); });
+                                              [](Ref* sender) { Transitions::getInstance().pushScene(SelectLanguage::createScene); });
     auto mnExit = MenuItemLabel::create(Label::createWithTTF(FontManager::mainMenu, lang["exit"]),
         [](Ref* sender){
             Director::getInstance()->end();

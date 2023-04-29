@@ -2,6 +2,7 @@
 #include "ui/CocosGUI.h"
 
 #include "DefColors.hpp"
+#include "Transitions.hpp"
 #include "FontManager.h"
 #include "Language.hpp"
 #include "StartMenu.h"
@@ -67,7 +68,7 @@ bool AbstractMenu::init() {
             Label::createWithTTF(FontManager::mainMenu, Language::getInstance()["absMenu"]["back"]),
             [&](Ref* sender){
                 m_onClickButtonBack();
-                Director::getInstance()->replaceScene(StartMenu::create());
+                Transitions::getInstance().pushScene(StartMenu::createScene);
             }
     );
     back->setPosition(origin.x + visibleSize.width - back->getContentSize().width/2 - 20, origin.y + back->getContentSize().height/2 + 20);
@@ -80,7 +81,7 @@ bool AbstractMenu::init() {
     auto listener = EventListenerKeyboard::create();
     listener->onKeyReleased = [](EventKeyboard::KeyCode keyCode, Event* event) {
         if (keyCode == EventKeyboard::KeyCode::KEY_BACK) {
-            Director::getInstance()->replaceScene(StartMenu::createScene());
+            Transitions::getInstance().popScene();
         }
     };
     _eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);

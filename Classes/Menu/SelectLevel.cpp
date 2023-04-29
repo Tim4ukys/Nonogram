@@ -6,6 +6,7 @@
 #include "Language.hpp"
 #include "GameMap.hpp"
 #include "ProgressGame.hpp"
+#include "Transitions.hpp"
 
 #include "ui/CocosGUI.h"
 
@@ -131,7 +132,7 @@ void SelectLevel::onReadyAddChild(std::any sucker, float widthLayer, float *pCon
                 btn->addClickEventListener(
                         [n = levelID, lv = level["codename"].get<std::string>()](Ref* sender){
                             CCLOG("Level number %zu in %s", n, lv.c_str());
-                            Director::getInstance()->replaceScene(GameMap::createScene(lv, static_cast<int>(n)));
+                            Transitions::getInstance().pushScene(std::bind(GameMap::createScene, lv, static_cast<int>(n)));
                         });
                 if (hBtn == 0.0f) hBtn = btn->getContentSize().height * btn->getScaleY();
                 pScrollView->addChild(btn);

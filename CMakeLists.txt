@@ -93,6 +93,7 @@ list(APPEND GAME_HEADER
         Classes/Config.hpp
         Classes/Language.hpp
         Classes/ProgressGame.hpp
+        Classes/Transitions.hpp
 
      Classes/FontManager.h
      Classes/DefColors.hpp

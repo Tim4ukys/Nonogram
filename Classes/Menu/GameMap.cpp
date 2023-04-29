@@ -8,6 +8,8 @@
 #include "SelectLevel.h"
 #include "ProgressGame.hpp"
 
+#include "Transitions.hpp"
+
 USING_NS_CC;
 
 //#define DEBUG_SIDE_NUMBS
@@ -374,7 +376,7 @@ void GameMap::registrationKBJ() {
             case EventKeyboard::KeyCode::KEY_BACK:
                 if (tch == ui::Widget::TouchEventType::ENDED) {
                     saveProgress();
-                    Director::getInstance()->replaceScene(SelectLevel::createScene());
+                    Transitions::getInstance().popScene();
                 }
                 break;
             case EventKeyboard::KeyCode::KEY_DPAD_UP:
