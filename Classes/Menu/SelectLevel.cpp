@@ -53,7 +53,7 @@ void SelectLevel::GmRama::renderMap(const std::vector<int>& prMap, int countBox)
     }
     sc->addChild(nd);
 
-    auto t = RenderTexture::create(static_cast<int>(std::ceil(width)), static_cast<int>(height));
+    auto t = RenderTexture::create(static_cast<int>(std::ceil(width)), static_cast<int>(std::ceil(height)));
     t->retain();
     t->begin();
     sc->visit();
