@@ -66,16 +66,19 @@ void GameMap::drawNumb(const cocos2d::Rect& r, int n, drawNumbFlags flag) {
 
     const float off{r.size.width / static_cast<float>(ndel)};
 
+    constexpr float fontWidth = 9.f;
+    constexpr float fontHeight = 16.f;
+
     Vec2 aftSize;
     if (flag == drawNumbFlags::numbsLeft) {
-        const auto w = (9 * r.size.height) / 16;
+        const auto w = (fontWidth * r.size.height) / fontHeight;
         aftSize = { MIN(w, off), r.size.height };
     } else {
         auto h = r.size.height;
-        auto w = (9 * h) / 16;
+        auto w = (fontWidth * h) / fontHeight;
         if (w > off) {
             w = off;
-            h = (16 * w) / 9;
+            h = (fontHeight * w) / fontWidth;
         }
         aftSize = {w, h};
     }
@@ -145,8 +148,8 @@ void GameMap::addGameRect() {
 
     const float margin_side = snippets::calcMargin(25.f, 320.f, vs_width);
     constexpr float margin_up = 25.f;
-    constexpr float sz_dight = 50.f;
-    constexpr float sz_empty = 7.5f;
+    const float sz_dight = snippets::calcMargin(50.f, 320.f, vs_width);
+    const float sz_empty = snippets::calcMargin(7.5f, 320.f, vs_width);
 
     const auto sz_line_w = vs_width - margin_side*2;
     const auto sz_line_h = vs_height - m_fPosGameRectY - margin_up;
@@ -194,7 +197,7 @@ void GameMap::addGameRect() {
     for (int x{}; x < m_nCountBox; ++x) {
         getAllNumbs(numbs_from::HORIZONTAL, m_nCountBox - x - 1, numbs);
 
-        constexpr float m_sd = 5.f;
+        const float m_sd = snippets::calcMargin(5.f, 320.f, vs_width);
         constexpr float m_pdwn = 2.5f;
         const auto countNumbs = numbs.size();
         const float lb = (sz_dight - static_cast<float>(countNumbs+1)*m_sd) / static_cast<float>(countNumbs);
@@ -217,7 +220,7 @@ void GameMap::addGameRect() {
     for (int x{}; x < m_nCountBox; ++x) {
         getAllNumbs(numbs_from::VERTICAL, x, numbs);
 
-        constexpr float m_sd = 2.5f;
+        const float m_sd = snippets::calcMargin(2.5f, 320.f, vs_width);
         constexpr float m_pdwn = 5.f;
         const auto countNumbs = numbs.size();
         const float lb = (sz_dight - static_cast<float>(countNumbs+1)*m_pdwn) / static_cast<float>(countNumbs);
