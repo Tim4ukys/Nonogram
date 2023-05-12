@@ -47,7 +47,7 @@ void SelectLanguage::onReadyAddChild(std::any sucker, float widthLayer, float *p
                                         [lk = langKey](Ref* sender) {
                                             Config::getInstance()["language"] = lk;
                                             Language::getInstance().updateLanguage(lk);
-                                            Director::getInstance()->replaceScene(SelectLanguage::create());
+                                            Director::getInstance()->replaceScene(SelectLanguage::createScene());
                                         });
         pMenu->addChild(ui);
     }
