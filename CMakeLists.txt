@@ -48,6 +48,11 @@ else()
 endif()
 include_directories( ${Boost_INCLUDE_DIRS} )
 
+# map constructor
+if (LINUX)
+    add_subdirectory(map-constructor)
+endif()
+
 if(XCODE)
     if(NOT DEFINED CMAKE_XCODE_ATTRIBUTE_IPHONEOS_DEPLOYMENT_TARGET)
         SET (CMAKE_XCODE_ATTRIBUTE_IPHONEOS_DEPLOYMENT_TARGET 8.0)
